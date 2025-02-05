@@ -13,7 +13,7 @@ const defaultImage = require("../../../assets/images/health-shohi.png");
 
 interface ImageProps {
   source?: any;
-  url?: string;
+  url?: string | null;
   style?: StyleProp<ImageStyle>;
   resizeMode?: "contain" | "cover" | "stretch" | "repeat" | "center";
   onPress?: any;

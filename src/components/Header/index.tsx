@@ -12,7 +12,7 @@ import { CText } from "..";
 import { COLORS_LIGHT, GET_COLORS, rgba } from "@/theme";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import FeatherIcon from "react-native-vector-icons/Feather";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props {
   title: string;
@@ -33,13 +33,16 @@ const CHeader: React.FC<Props> = (props) => {
     onBack,
     containerStyle = {},
     isShowBack = true,
-    onPressCart,
-    onPressCancel,
-    onPressMore,
   } = props;
 
   return (
-    <View style={{ ...containerStyle, ...styles.container }}>
+    <View
+      style={{
+        ...containerStyle,
+        ...styles.container,
+        paddingTop: useSafeAreaInsets().top,
+      }}
+    >
       {isShowBack && (
         <TouchableOpacity onPress={() => (onBack ? onBack : goBack())}>
           <MaterialIcon name={"keyboard-arrow-left"} size={scale(24)} />
@@ -48,39 +51,23 @@ const CHeader: React.FC<Props> = (props) => {
       <CText
         fontWeight={"700"}
         fontSize={18}
+        textAlign={"center"}
         style={{
           ...titleStyle,
           flex: 1,
           paddingHorizontal: scale(isShowBack ? 4 : 0),
+          alignItems: "center",
         }}
       >
         {title}
       </CText>
-      <TouchableOpacity onPress={() => onPressCart && onPressCart()}>
+      <TouchableOpacity>
         <FeatherIcon
-          name={"shopping-cart"}
+          name={"heart"}
           size={scale(24)}
           color={COLORS_LIGHT.BLACK_1}
         />
       </TouchableOpacity>
-
-      <View style={styles.button}>
-        <TouchableOpacity onPress={() => onPressMore && onPressMore()}>
-          <MaterialIcon
-            name={"more-horiz"}
-            size={scale(16)}
-            color={COLORS_LIGHT.BLACK_1}
-          />
-        </TouchableOpacity>
-        <View style={styles.line} />
-        <TouchableOpacity onPress={() => onPressCancel && onPressCancel()}>
-          <Ionicons
-            name={"close-circle-outline"}
-            size={scale(16)}
-            color={COLORS_LIGHT.BLACK_1}
-          />
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
@@ -94,6 +81,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingBottom: scale(12),
+    backgroundColor: GET_COLORS().TRANSPARENT,
   },
   button: {
     flexDirection: "row",

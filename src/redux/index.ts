@@ -9,6 +9,7 @@ import {
   AppStateReducer,
   AppStateSaga,
 } from "@/redux/AppState";
+import { HOME_ACTION, HomeAction } from "@/redux/Home/HomeAction";
 
 const homePersist = {
   key: "home",
@@ -26,9 +27,11 @@ const ReduxSaga = function* ReduxSaga() {
 
 const ReduxAction = {
   APP_STATE_ACTION: { ...AppStateAction },
+  HOME_ACTION: { ...HomeAction },
 };
 const REDUX_ACTION = {
   APP_STATE_ACTION: { ...APP_STATE_ACTION },
+  HOME_ACTION: { ...HOME_ACTION },
 };
 
 export { ReduxSaga, RootReducer, REDUX_ACTION, ReduxAction };

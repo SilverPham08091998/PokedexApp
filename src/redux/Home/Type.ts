@@ -1,10 +1,5 @@
-export interface HomeInitialStateType {
-  accessToken: string;
-  refreshToken: string;
-  userName: string;
-}
+import { PokemonInfo } from "@/type";
 
-export interface HomeGetAccessTokenType {
-  password: string;
-  userName: string;
+export interface HomeInitialStateType {
+  listPokedex: Array<PokemonInfo>;
 }

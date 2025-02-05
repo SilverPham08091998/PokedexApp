@@ -1,6 +1,7 @@
 import { ProductStackParamList } from "./ProductStackNavigator/ProductStackParamList";
 import { CategoriesStackParamList } from "./TabHomeNavigator/Categories/CategoriesStackParamsList";
 import { SettingStackParamList } from "./SettingStackNavigator/SettingStackParamList";
+import { PokemonInfoStackParamList } from "./PokemonInfoNavigator/PokemonInfoStackParamList";
 
 export type RootStackParamList = {
   MAIN_STACK: undefined;
@@ -10,13 +11,16 @@ export type RootStackParamList = {
   SEARCH_STACK: undefined;
   PRODUCT_STACK: undefined | { screen: string; params?: any };
   SETTING_STACK: undefined;
+  POKEMON_INFO_STACK: undefined | { screen: string; params?: any };
 };
 export type {
   ProductStackParamList,
   CategoriesStackParamList,
   SettingStackParamList,
+  PokemonInfoStackParamList,
 };
 
 export type CombineStackParamList = RootStackParamList &
   ProductStackParamList &
-  SettingStackParamList;
+  SettingStackParamList &
+  PokemonInfoStackParamList;

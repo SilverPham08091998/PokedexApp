@@ -10,6 +10,7 @@ import { ProductDetailScreen, ProductScreen } from "@/screens/ProductScreen";
 
 import { SettingScreen } from "@/screens/SettingScreen";
 
+export * from "./PokemonInfoScreen";
 export {
   CategoriesScreen,
   HomeScreens,

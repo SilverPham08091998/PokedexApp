@@ -1,48 +1,35 @@
-import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
-import React from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import React, { useEffect } from "react";
 import { COLORS_LIGHT, GET_COLORS } from "@/theme";
 import { scale } from "react-native-utils-scale";
-import { CHeader, CText, SwipeItem } from "@/components";
+import { CHeader } from "@/components";
+import { useAppDispatch, useAppSelector } from "@/util";
+import { ReduxAction } from "@/redux";
+import PokemonItem from "@/screens/HomeScreens/components/PokemonItem";
 
 const HomeScreens = () => {
+  const dispatch = useAppDispatch();
+  const { listPokedex } = useAppSelector((state) => {
+    return state.home;
+  });
+  useEffect(() => {
+    dispatch(ReduxAction.HOME_ACTION.getPokedex(10));
+  }, []);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <CHeader title={"Home"} isShowBack={true} />
       <FlatList
-        data={[1, 2, 3, 4, 5]}
-        renderItem={({ index }) => {
-          return (
-            <SwipeItem
-              showLeftAction={false}
-              showRightAction={true}
-              rightActions={"both"}
-              styleSwipeContainer={{ marginHorizontal: scale(24) }}
-              renderItemComponent={() => {
-                return (
-                  <View
-                    style={{
-                      height: 100,
-                      backgroundColor: GET_COLORS().PRIMARY,
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <CText
-                      fontSize={16}
-                      fontWeight={"600"}
-                      color={GET_COLORS().WHITE}
-                    >
-                      {`Swipe ${index + 1}`}
-                    </CText>
-                  </View>
-                );
-              }}
-            />
-          );
+        showsVerticalScrollIndicator={false}
+        data={listPokedex}
+        columnWrapperStyle={{ justifyContent: "space-around" }}
+        numColumns={2}
+        renderItem={({ item }) => {
+          return <PokemonItem item={item} />;
         }}
-        ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
+        ItemSeparatorComponent={() => <View style={{ height: scale(12) }} />}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -51,7 +38,6 @@ export default HomeScreens;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: GET_COLORS().BACKGROUND_GRAY,
-
     flex: 1,
   },
   line: {

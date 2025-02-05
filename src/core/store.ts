@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ReduxSaga, RootReducer } from "@/redux";
 import { persistReducer, persistStore } from "redux-persist";
 import { configureStore, MiddlewareArray } from "@reduxjs/toolkit";
-import logger from "redux-logger";
+import { reactotron } from "@/config";
 
 const SagaMiddleware = createSagaMiddleware();
 
@@ -18,9 +18,10 @@ const FinalReducer = persistReducer(rootPersistConfig, RootReducer);
 export const store = configureStore({
   reducer: FinalReducer,
   middleware: __DEV__
-    ? new MiddlewareArray().concat(SagaMiddleware, logger)
+    ? new MiddlewareArray().concat(SagaMiddleware)
     : [SagaMiddleware],
-  enhancers: [],
+  enhancers: (getDefaultEnhancers) =>
+    getDefaultEnhancers.concat(reactotron.createEnhancer()),
 });
 export const persistor = persistStore(store);
 

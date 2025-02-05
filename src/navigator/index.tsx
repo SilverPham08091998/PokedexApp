@@ -13,6 +13,7 @@ import ProductStack from "@/navigator/ProductStackNavigator";
 import { REDUX_ACTION } from "@/redux";
 import NetInfo from "@react-native-community/netinfo";
 import { useAppDispatch } from "@/util";
+import PokemonInfoStack from "@/navigator/PokemonInfoNavigator";
 
 const Stack = createNativeStackNavigator<CombineStackParamList>();
 
@@ -39,6 +40,11 @@ const Navigator = () => {
         <Stack.Screen name={SCREEN_NAME.MAIN_STACK} component={BottomTabHome} />
         <Stack.Screen name={SCREEN_NAME.HOME_STACK} component={HomeStack} />
         <Stack.Screen name={SCREEN_NAME.SEARCH_STACK} component={SearchStack} />
+
+        <Stack.Screen
+          name={SCREEN_NAME.POKEMON_INFO_STACK}
+          component={PokemonInfoStack}
+        />
 
         <Stack.Screen
           name={SCREEN_NAME.CATEGORIES_STACK}

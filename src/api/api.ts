@@ -24,7 +24,7 @@ export default class UtilApi {
       "Content-Type": "application/x-www-form-urlencoded",
       ...configs.header,
     };
-    
+
     const domain = configs.domain ? configs.domain : DOMAIN;
 
     configs.url = `${domain}/${configs.url}`;

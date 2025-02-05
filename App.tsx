@@ -14,6 +14,10 @@ import {
 } from "@/components";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+if (__DEV__) {
+  // @ts-ignore
+  import("./src/config/ReactotronConfig").then();
+}
 const App = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

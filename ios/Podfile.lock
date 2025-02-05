@@ -348,6 +348,9 @@ PODS:
     - React-Core
   - react-native-netinfo (11.4.1):
     - React-Core
+  - react-native-pager-view (6.7.0):
+    - RCT-Folly (= 2021.07.22.00)
+    - React-Core
   - react-native-safe-area-context (3.4.1):
     - React-Core
   - react-native-utils-scale (2.6.0):
@@ -566,6 +569,7 @@ DEPENDENCIES:
   - react-native-config/Extension (from `../node_modules/react-native-config`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-utils-scale (from `../node_modules/react-native-utils-scale`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
@@ -667,6 +671,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-document-picker"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-pager-view:
+    :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-utils-scale:
@@ -763,6 +769,7 @@ SPEC CHECKSUMS:
   react-native-config: 8e425892a531627c52db765be3088185cb871e19
   react-native-document-picker: a338165804b1a14c8e408448115dc0edfd7b73ca
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
+  react-native-pager-view: 39c4d6b965c493dd67f77c76d4eed742cc2f6910
   react-native-safe-area-context: 667324e20fb3dd9c39c12d6036675ed90099bcd5
   react-native-utils-scale: 86a87573b879a4b53417eb3590c4e6e9e9f070e1
   React-NativeModulesApple: 3020a249a8b7c7d7070a1666925e86e9d3f2773e
