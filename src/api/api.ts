@@ -1,6 +1,6 @@
 import axios, { Method } from "axios";
 import { DOMAIN } from "./urlAPI";
-import { ApiErrorResponse, ApiSuccessResponse, HttpMethod } from "@/type";
+import { ApiErrorResponse, HttpMethod } from "@/type";
 import qs from "qs";
 
 interface configs {
@@ -19,40 +19,21 @@ interface configs {
 }
 
 export default class UtilApi {
-  static request = <T>(configs: configs): Promise<ApiSuccessResponse<T>> => {
-    let header: any = {
-      "Content-Type": "application/x-www-form-urlencoded",
+  static request = <T>(configs: configs): Promise<T> => {
+    let header: Record<string, any> = {
       ...configs.header,
     };
 
     const domain = configs.domain ? configs.domain : DOMAIN;
-
-    configs.url = `${domain}/${configs.url}`;
+    configs.url = configs.domain ? configs.domain : `${domain}/${configs.url}`;
     let data;
     if (configs.options?.json) {
       data = JSON.stringify(configs.params);
       header["Content-Type"] = "application/json";
     }
-    if (configs.options?.formData) {
-      if (configs.params instanceof FormData) {
-        data = configs.params;
-      } else {
-        data = new FormData();
-        for (const key in configs.params) {
-          if (Object.prototype.hasOwnProperty.call(configs.params, key)) {
-            data.append(key, configs.params[key]);
-          }
-        }
-        header["Content-Type"] = "multipart/form-data";
-      }
-    }
-    if (configs.options?.formUrlEncoded) {
-      data = new URLSearchParams(configs.params).toString();
-      header["Content-Type"] = "application/x-www-form-urlencoded";
-    }
 
     return axios
-      .request<ApiSuccessResponse<T>>({
+      .request<T>({
         url: configs.url,
         timeout: configs.timeout || 60000,
         headers: header,
@@ -68,7 +49,7 @@ export default class UtilApi {
           configs.method.toUpperCase() !== HttpMethod.GET ? data : undefined,
       })
       .then((response) => {
-        return response.data as ApiSuccessResponse<T>;
+        return response.data as T;
       })
       .catch((error) => {
         return Promise.reject({

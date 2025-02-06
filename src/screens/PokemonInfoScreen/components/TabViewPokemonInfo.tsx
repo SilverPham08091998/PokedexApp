@@ -10,12 +10,15 @@ import TabStats from "@/screens/PokemonInfoScreen/components/TabStats";
 import TabEvolution from "@/screens/PokemonInfoScreen/components/TabEvolution";
 import TabMoves from "@/screens/PokemonInfoScreen/components/TabMoves";
 import TabViewComponent from "@/components/TabView";
+import { scale } from "react-native-utils-scale";
 
 interface Props {}
 
-const TabViewPokemonInfo: React.FC<Props> = () => {
-  const renderScene = (props: SceneRendererProps & { route: RoutesType }) => {
-    switch (props.route.key) {
+const TabViewPokemonInfo: React.FC<Props> = (props: Props) => {
+  const renderScene = (
+    sceneRenderProps: SceneRendererProps & { route: RoutesType }
+  ) => {
+    switch (sceneRenderProps.route.key) {
       case ROUTE.ABOUT:
         return <TabAbout />;
       case ROUTE.STATS:
@@ -30,14 +33,12 @@ const TabViewPokemonInfo: React.FC<Props> = () => {
   };
   return (
     <TabViewComponent
-      indexDefault={0}
       renderScene={renderScene}
       routesProps={pokemonInfoRoutes}
       sceneContainerStyle={{
-        paddingHorizontal: 0,
-        paddingVertical: 0,
+        paddingHorizontal: scale(12),
+        paddingVertical: scale(12),
       }}
-      swipeEnabled={true}
     />
   );
 };

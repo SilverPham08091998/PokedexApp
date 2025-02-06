@@ -1,26 +1,29 @@
 import { all, call, Effect, put, takeLatest } from "redux-saga/effects";
 import { HOME_ACTION } from "@/redux/Home/HomeAction";
-import { API, UtilApi } from "@/api";
+import { UtilApi } from "@/api";
 import {
   ListPokedex,
   PayloadActionType,
   PokemonInfo,
+  PokemonSpecies,
   ResourceLink,
 } from "@/type";
 import { REDUX_ACTION } from "@/redux";
 import { invoke } from "@/redux/excute";
-import axios, { AxiosResponse } from "axios";
 
 const HomeSaga = function* watchHome() {
-  yield all([takeLatest(HOME_ACTION.GET_POKEDEX, handleGetPokedex)]);
+  yield all([
+    takeLatest(HOME_ACTION.GET_POKEDEX, handleGetPokedex),
+    takeLatest(HOME_ACTION.GET_POKEMON_INFO, handleGetPokemonInfo),
+  ]);
 };
 
 function* handleGetPokedex(action: PayloadActionType<number>) {
   const api = () => {
     return UtilApi.request<ListPokedex>({
-      url: API.LIST_POKEDEX,
+      domain: `https://pokeapi.co/api/v2/pokemon?offset=1300`,
       method: "GET",
-      params: { limit: action.payload },
+      params: { limit: 50 },
     });
   };
   const execution = function* (): Generator<Effect, void, any> {
@@ -29,12 +32,14 @@ function* handleGetPokedex(action: PayloadActionType<number>) {
       const fetchPokedexData = async (results: Array<ResourceLink>) => {
         return await Promise.all(
           results.map(async (item: ResourceLink) => {
-            const responseInfo: AxiosResponse<PokemonInfo> = await axios(
-              item.url
-            );
+            const responseInfo: PokemonInfo =
+              await UtilApi.request<PokemonInfo>({
+                domain: item.url,
+                method: "GET",
+              });
             return {
-              ...responseInfo.data,
-              name: responseInfo.data.name.toUpperCase(),
+              ...responseInfo,
+              name: responseInfo.name.toUpperCase(),
             };
           })
         );
@@ -52,6 +57,32 @@ function* handleGetPokedex(action: PayloadActionType<number>) {
   yield* invoke(
     execution,
     REDUX_ACTION.HOME_ACTION.GET_POKEDEX_FAILED,
+    () => action.callback && action.callback()
+  );
+}
+
+function* handleGetPokemonInfo(action: PayloadActionType<PokemonInfo>) {
+  const fetchSpecies = () => {
+    return UtilApi.request<PokemonSpecies>({
+      domain: action.payload.species.url,
+      method: "GET",
+    });
+  };
+  const execution = function* (): Generator<Effect, void, any> {
+    const response: PokemonSpecies = yield call(fetchSpecies);
+    if (response) {
+      yield put({
+        type: REDUX_ACTION.HOME_ACTION.GET_POKEMON_INFO_SUCCESS,
+        payload: {
+          species: response,
+          info: action.payload,
+        },
+      });
+    }
+  };
+  yield* invoke(
+    execution,
+    REDUX_ACTION.HOME_ACTION.GET_POKEMON_INFO_FAILED,
     () => action.callback && action.callback()
   );
 }

@@ -6,8 +6,8 @@ interface Props {}
 
 const TabEvolution: React.FC<Props> = (props: Props) => {
   return (
-    <View>
-      <CText>ABC</CText>
+    <View style={{ flex: 1 }}>
+      <CText>Base Stats</CText>
     </View>
   );
 };

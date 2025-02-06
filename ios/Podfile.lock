@@ -353,6 +353,11 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.4.1):
     - React-Core
+  - react-native-skia (1.11.5):
+    - RCT-Folly (= 2021.07.22.00)
+    - React
+    - React-callinvoker
+    - React-Core
   - react-native-utils-scale (2.6.0):
     - React-Core
   - React-NativeModulesApple (0.72.4):
@@ -571,6 +576,7 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-skia (from `../node_modules/@shopify/react-native-skia`)"
   - react-native-utils-scale (from `../node_modules/react-native-utils-scale`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -675,6 +681,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-skia:
+    :path: "../node_modules/@shopify/react-native-skia"
   react-native-utils-scale:
     :path: "../node_modules/react-native-utils-scale"
   React-NativeModulesApple:
@@ -771,6 +779,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: cec9c4e86083cb5b6aba0e0711f563e2fbbff187
   react-native-pager-view: 39c4d6b965c493dd67f77c76d4eed742cc2f6910
   react-native-safe-area-context: 667324e20fb3dd9c39c12d6036675ed90099bcd5
+  react-native-skia: a91c066e971c784b74cc99f3d79205d92d0ab9ff
   react-native-utils-scale: 86a87573b879a4b53417eb3590c4e6e9e9f070e1
   React-NativeModulesApple: 3020a249a8b7c7d7070a1666925e86e9d3f2773e
   React-perflogger: 496a1a3dc6737f964107cb3ddae7f9e265ddda58
@@ -807,6 +816,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981
 
-PODFILE CHECKSUM: 8745ddc0391cfbe8fed19171b8aa98e874dadb17
+PODFILE CHECKSUM: 21b3cf94051c64eaa995906405119c6ed002b2ce
 
 COCOAPODS: 1.16.2

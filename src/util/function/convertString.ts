@@ -59,6 +59,10 @@ const formatNameTxt = (name: string) => {
   return "";
 };
 
+const upperCaseFirstChart = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 const STRING_CONVERTER = {
   removeAllNewLineBreak,
   removeHtmlTag,
@@ -67,5 +71,6 @@ const STRING_CONVERTER = {
   stringHashToHsl,
   formatNameTxt,
   computedText,
+  upperCaseFirstChart,
 };
 export { STRING_CONVERTER };

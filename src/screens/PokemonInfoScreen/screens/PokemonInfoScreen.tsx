@@ -1,13 +1,22 @@
-import React from "react";
-import { FlatList, ImageBackground, View } from "react-native";
+import React, { useEffect } from "react";
+import { FlatList, Image, View } from "react-native";
 import { CHeader, CImage, CText } from "@/components";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { DEVICE_WIDTH, SCREEN_NAME } from "@/util";
+import { SCREEN_NAME, useAppDispatch } from "@/util";
 import { PokemonInfoStackParamList } from "@/navigator/PokemonInfoNavigator/PokemonInfoStackParamList";
 import { PokemonTypeColors } from "@/type";
 import { COLORS_LIGHT, GET_COLORS, IMAGE_URL, rgba } from "@/theme";
 import { scale } from "react-native-utils-scale";
 import TabViewPokemonInfo from "@/screens/PokemonInfoScreen/components/TabViewPokemonInfo";
+import { ReduxAction } from "@/redux";
+import Animated, {
+  Easing,
+  ReduceMotion,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
 
 interface Props
   extends NativeStackScreenProps<
@@ -17,9 +26,30 @@ interface Props
 
 const PokemonInfoScreen: React.FC<Props> = (props: Props) => {
   const { pokemon } = props.route.params;
+  const dispatch = useAppDispatch();
   const primaryType =
     pokemon.types.find((type) => type.slot === 1)?.type.name || "";
   const colorPrimary = PokemonTypeColors[primaryType.toUpperCase()];
+
+  useEffect(() => {
+    dispatch(ReduxAction.HOME_ACTION.getPokemonInfo(pokemon));
+  }, []);
+
+  const rotation = useSharedValue<string>("0deg");
+  useEffect(() => {
+    rotation.value = withRepeat(
+      withTiming("360deg", {
+        duration: 9000,
+        easing: Easing.linear,
+        reduceMotion: ReduceMotion.System,
+      }),
+      -1,
+      false,
+      () => {},
+      ReduceMotion.System
+    );
+  }, []);
+
   const renderPokemonType = () => {
     return (
       <FlatList
@@ -56,53 +86,77 @@ const PokemonInfoScreen: React.FC<Props> = (props: Props) => {
     );
   };
 
+  const styleAnimation = useAnimatedStyle(() => {
+    return {
+      width: 250,
+      height: 250,
+      transform: [
+        {
+          rotate: rotation.value,
+        },
+      ],
+    };
+  });
+
   return (
     <View style={{ backgroundColor: rgba(colorPrimary, 0.6), flex: 1 }}>
       <View style={{ flex: 1 }}>
         <CHeader
           title={pokemon.name}
-          titleStyle={{ color: COLORS_LIGHT.WHITE }}
+          titleStyle={{
+            color: COLORS_LIGHT.WHITE,
+            zIndex: 1,
+            textAlign: "left",
+          }}
         />
         <View>{renderPokemonType()}</View>
-
-        <ImageBackground
+        <Image
           style={{
             width: scale(200),
             height: scale(200),
-            justifyContent: "flex-end",
-            alignSelf: "flex-end",
             position: "absolute",
-            top: scale(100),
-            right: scale(12),
+            top: scale(150),
+            left: scale(12),
+            transform: [{ rotate: "90deg" }, { translateY: 100 }],
           }}
           source={IMAGE_URL.pokeball}
-          tintColor={rgba(colorPrimary, 0.6)}
+          tintColor={colorPrimary}
         />
+
+        <View
+          style={{
+            position: "absolute",
+            top: scale(50),
+            right: scale(12),
+          }}
+        >
+          <Animated.Image
+            style={{
+              ...styleAnimation,
+            }}
+            source={IMAGE_URL.pokeball}
+            tintColor={colorPrimary}
+          />
+          <CImage
+            url={pokemon.sprites.front_default}
+            resizeMode={"cover"}
+            style={{
+              width: scale(250),
+              height: scale(250),
+              zIndex: 1,
+              position: "absolute",
+            }}
+          />
+        </View>
       </View>
-      <CImage
-        url={pokemon.sprites.front_default}
-        resizeMode={"contain"}
-        style={{
-          width: scale(250),
-          height: scale(250),
-          position: "absolute",
-          top: DEVICE_WIDTH / 4,
-          right: scale(DEVICE_WIDTH / 2 - 125),
-          left: scale(DEVICE_WIDTH / 2 - 125),
-          zIndex: 1,
-        }}
-      />
+
       <View
         style={{
           flex: 2,
           backgroundColor: COLORS_LIGHT.WHITE,
-          borderTopLeftRadius: scale(12),
-          borderTopRightRadius: scale(12),
         }}
       >
-        <View style={{ paddingVertical: scale(24), flex: 1 }}>
-          <TabViewPokemonInfo />
-        </View>
+        <TabViewPokemonInfo />
       </View>
     </View>
   );

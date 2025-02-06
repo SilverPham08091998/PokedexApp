@@ -73,20 +73,28 @@ const LabelValueComponent = (props: Props) => {
         <View
           style={{
             flex: 1,
-            marginLeft: scale(12),
-            marginRight: scale(36),
+            flexDirection: "row",
+            alignItems: "center",
           }}
         >
           <CText
             distanceBottom={4}
             color={GET_COLORS().BLACK_3}
             fontWeight={"bold"}
-            fontSize={14}
+            fontSize={16}
             numberOfLines={5}
           >
             {label}
           </CText>
-          <CText color={GET_COLORS().BLACK_4} style={{ flex: 1 }}>
+          <CText
+            fontSize={16}
+            fontWeight={"500"}
+            color={GET_COLORS().BLACK_4}
+            style={{
+              flex: 1,
+              marginHorizontal: scale(24),
+            }}
+          >
             {typeof value === "boolean" ? (value ? "Có" : "Không") : value}
           </CText>
         </View>
