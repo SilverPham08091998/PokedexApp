@@ -10,13 +10,14 @@ import {
 import { BarChart, RadarChart } from "echarts/charts";
 import { useAppSelector } from "@/util";
 import { PokemonTypeColors } from "@/type";
+import { STRING_CONVERTER } from "@/util/function";
 
 interface Props {
   option?: any;
 }
 
 const E_HEIGHT = 300;
-const E_WIDTH = 300;
+const E_WIDTH = 400;
 echarts.use([
   TitleComponent,
   TooltipComponent,
@@ -34,17 +35,17 @@ const ChartRadar = (props: Props) => {
     info?.types.find((type) => type.slot === 1)?.type.name || "";
   const colorPrimary = PokemonTypeColors[primaryType.toUpperCase()];
   const chartRef = useRef<any>(null);
+  const indicator = info?.stats.map((i) => {
+    return {
+      name: STRING_CONVERTER.upperCaseFirstChart(i.stat.name),
+      max: i.base_stat + 252 / 4 + 31,
+      min: 0,
+    };
+  });
   const optionDefault = {
     color: [colorPrimary],
     radar: {
-      indicator: [
-        { name: "Hp", max: 200, min: 0 },
-        { name: "Attack", max: 200, min: 0 },
-        { name: "Defense", max: 200, min: 0 },
-        { name: "Special-Attack", max: 200, min: 0 },
-        { name: "Special-Defense", max: 200, min: 0 },
-        { name: "Speed", max: 200, min: 0 },
-      ],
+      indicator: indicator,
     },
     series: [
       {
@@ -52,7 +53,10 @@ const ChartRadar = (props: Props) => {
         areaStyle: {},
         data: [
           {
-            value: info?.stats.map((i) => i.base_stat) || [],
+            value:
+              info?.stats.map((i) =>
+                i?.effort ? i.base_stat + 10 * i?.effort + 31 : i.base_stat + 31
+              ) || [],
             name: info?.name,
           },
         ],

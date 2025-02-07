@@ -2,6 +2,7 @@ import { all, call, Effect, put, takeLatest } from "redux-saga/effects";
 import { HOME_ACTION } from "@/redux/Home/HomeAction";
 import { UtilApi } from "@/api";
 import {
+  EvolutionChain,
   ListPokedex,
   PayloadActionType,
   PokemonInfo,
@@ -10,6 +11,7 @@ import {
 } from "@/type";
 import { REDUX_ACTION } from "@/redux";
 import { invoke } from "@/redux/excute";
+import { EvolutionNode } from "@/type/PokemonEvolutionChain";
 
 const HomeSaga = function* watchHome() {
   yield all([
@@ -21,7 +23,7 @@ const HomeSaga = function* watchHome() {
 function* handleGetPokedex(action: PayloadActionType<number>) {
   const api = () => {
     return UtilApi.request<ListPokedex>({
-      domain: `https://pokeapi.co/api/v2/pokemon?offset=1300`,
+      domain: `https://pokeapi.co/api/v2/pokemon?offset=785`,
       method: "GET",
       params: { limit: 50 },
     });
@@ -69,16 +71,34 @@ function* handleGetPokemonInfo(action: PayloadActionType<PokemonInfo>) {
     });
   };
   const execution = function* (): Generator<Effect, void, any> {
-    const response: PokemonSpecies = yield call(fetchSpecies);
-    if (response) {
-      yield put({
-        type: REDUX_ACTION.HOME_ACTION.GET_POKEMON_INFO_SUCCESS,
-        payload: {
-          species: response,
-          info: action.payload,
-        },
+    const responseSpecies: PokemonSpecies = yield call(fetchSpecies);
+    const fetchEvolution = () => {
+      return UtilApi.request<EvolutionChain>({
+        domain: responseSpecies.evolution_chain.url,
+        method: "GET",
       });
-    }
+    };
+    const fetchAllChainPokemonInfo = async (node: EvolutionNode) => {
+      node.pokemon = await UtilApi.request<PokemonInfo>({
+        domain: `https://pokeapi.co/api/v2/pokemon/${node.species.name}`,
+        method: "GET",
+      });
+      for (const evolution of node.evolves_to) {
+        await fetchAllChainPokemonInfo(evolution);
+      }
+    };
+    const responseEvolution: EvolutionChain = yield call(fetchEvolution);
+
+    yield call(fetchAllChainPokemonInfo, responseEvolution.chain);
+
+    yield put({
+      type: REDUX_ACTION.HOME_ACTION.GET_POKEMON_INFO_SUCCESS,
+      payload: {
+        species: responseSpecies,
+        info: action.payload,
+        evolution: responseEvolution,
+      },
+    });
   };
   yield* invoke(
     execution,

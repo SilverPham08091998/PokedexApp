@@ -9,7 +9,7 @@ import { scale } from "react-native-utils-scale";
 
 interface Props {}
 
-const TabAbout: React.FC<Props> = (props: Props) => {
+const TabAbout: React.FC<Props> = () => {
   const { species, info } = useAppSelector((state) => {
     return state.home.pokemonInfo;
   });
