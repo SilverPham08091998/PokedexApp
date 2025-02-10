@@ -170,8 +170,10 @@ const TabEvolution: React.FC<Props> = () => {
     <ScrollView
       style={{
         flex: 1,
-        paddingVertical: scale(12),
+      }}
+      contentContainerStyle={{
         flexGrow: 1,
+        paddingBottom: scale(24),
       }}
       showsVerticalScrollIndicator={false}
     >

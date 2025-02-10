@@ -1,4 +1,10 @@
-import { EvolutionChain, PokemonInfo, PokemonSpecies } from "@/type";
+import {
+  EvolutionChain,
+  PokemonInfo,
+  PokemonMove,
+  PokemonSpecies,
+  ResourceLink,
+} from "@/type";
 
 export interface HomeInitialStateType {
   listPokedex: Array<PokemonInfo>;
@@ -6,5 +12,7 @@ export interface HomeInitialStateType {
     info?: PokemonInfo;
     species?: PokemonSpecies;
     evolution?: EvolutionChain;
+    moves?: Array<PokemonMove>;
   };
+  versions: Array<ResourceLink>;
 }

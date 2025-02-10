@@ -5,6 +5,7 @@ import DateTimerPicker from "@/components/DateTimePicker";
 import CDropdown from "@/components/Dropdown";
 import CSwitch from "@/components/Switch";
 import SwipeItem from "@/components/SwipeItem";
+import CModal from "@/components/CustomModal";
 
 export {
   CButton,
@@ -14,6 +15,7 @@ export {
   CDropdown,
   CSwitch,
   SwipeItem,
+  CModal,
 };
 export * from "./HookFormWrapperComponent";
 export * from "./Text";

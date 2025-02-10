@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TextStyle, TouchableWithoutFeedback } from "react-native";
+import { Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
 import { fontScale } from "react-native-utils-scale";
 import Clipboard from "@react-native-community/clipboard";
 import { GET_COLORS } from "@/theme";
@@ -9,7 +9,8 @@ export interface TextProps {
   fontSize?: number;
   bold?: boolean;
   color?: string;
-  style?: TextStyle | TextStyle[];
+  style?: ViewStyle;
+  textStyle?: TextStyle | TextStyle[];
   numberOfLines?: number;
   touch?: boolean;
   onPress?: () => void;
@@ -67,159 +68,40 @@ const TextComponent: React.FC<React.PropsWithChildren<TextProps>> = (props) => {
     textDecorationColor = undefined,
     fontFamily = undefined,
     distanceTop = 0,
+    textStyle,
   } = props;
 
-  if (touch) {
-    if (numberOfLines) {
-      return (
-        <TouchableWithoutFeedback onPress={onPress}>
-          <Text
-            ellipsizeMode={ellipseMode}
-            style={[
-              {
-                fontSize: fontScale(fontSize),
-                color: color,
-                lineHeight: lineHeight ? lineHeight : undefined,
-                fontWeight: fontWeight,
-                marginBottom: distanceBottom,
-                textDecorationLine: textDecorationLine,
-                textAlign: textAlign,
-                textDecorationColor: textDecorationColor,
-                fontFamily: fontFamily,
-                textDecorationStyle: textDecorationStyle,
-                marginTop: distanceTop,
-              },
-              style,
-            ]}
-            numberOfLines={numberOfLines}
-          >
-            {children}
-          </Text>
-        </TouchableWithoutFeedback>
-      );
-    } else {
-      return (
-        <TouchableWithoutFeedback onPress={onPress}>
-          <Text
-            style={[
-              {
-                fontSize: fontScale(fontSize),
-                color: color,
-                lineHeight: lineHeight ? lineHeight : undefined,
-                fontWeight: fontWeight,
-                marginBottom: distanceBottom,
-                textDecorationLine: textDecorationLine,
-                textAlign: textAlign,
-                textDecorationColor: textDecorationColor,
-                fontFamily: fontFamily,
-                textDecorationStyle: textDecorationStyle,
-                marginTop: distanceTop,
-              },
-              style,
-            ]}
-          >
-            {children}
-          </Text>
-        </TouchableWithoutFeedback>
-      );
-    }
-  } else {
-    if (numberOfLines) {
-      return copy ? (
-        <Text
-          onPress={() => copyText(`${children}`)}
-          ellipsizeMode={ellipseMode}
-          style={[
-            {
-              fontSize: fontScale(fontSize),
-              color: color,
-              lineHeight: lineHeight ? lineHeight : undefined,
-              fontWeight: fontWeight,
-              marginBottom: distanceBottom,
-              textDecorationLine: textDecorationLine,
-              textAlign: textAlign,
-              textDecorationColor: textDecorationColor,
-              fontFamily: fontFamily,
-              textDecorationStyle: textDecorationStyle,
-              marginTop: distanceTop,
-            },
-            style,
-          ]}
-          numberOfLines={numberOfLines}
-        >
-          {children}
-        </Text>
-      ) : (
-        <Text
-          ellipsizeMode={ellipseMode}
-          style={[
-            {
-              fontSize: fontScale(fontSize),
-              color: color,
-              lineHeight: lineHeight ? lineHeight : undefined,
-              fontWeight: fontWeight,
-              marginBottom: distanceBottom,
-              textDecorationLine: textDecorationLine,
-              textAlign: textAlign,
-              textDecorationColor: textDecorationColor,
-              fontFamily: fontFamily,
-              textDecorationStyle: textDecorationStyle,
-              marginTop: distanceTop,
-            },
-            style,
-          ]}
-          numberOfLines={numberOfLines}
-        >
-          {children}
-        </Text>
-      );
-    } else {
-      return copy ? (
-        <Text
-          onPress={() => copyText(`${children}`)}
-          style={[
-            {
-              fontSize: fontScale(fontSize),
-              color: color,
-              lineHeight: lineHeight ? lineHeight : undefined,
-              fontWeight: fontWeight,
-              marginBottom: distanceBottom,
-              textDecorationLine: textDecorationLine,
-              textAlign: textAlign,
-              textDecorationColor: textDecorationColor,
-              fontFamily: fontFamily,
-              textDecorationStyle: textDecorationStyle,
-              marginTop: distanceTop,
-            },
-            style,
-          ]}
-        >
-          {children}
-        </Text>
-      ) : (
-        <Text
-          style={[
-            {
-              fontSize: fontScale(fontSize),
-              color: color,
-              lineHeight: lineHeight ? lineHeight : undefined,
-              fontWeight: fontWeight,
-              marginBottom: distanceBottom,
-              textDecorationLine: textDecorationLine,
-              textAlign: textAlign,
-              textDecorationColor: textDecorationColor,
-              fontFamily: fontFamily,
-              textDecorationStyle: textDecorationStyle,
-              marginTop: distanceTop,
-            },
-            style,
-          ]}
-        >
-          {children}
-        </Text>
-      );
-    }
-  }
+  return (
+    <TouchableOpacity
+      onPress={() => (copy ? copyText(`${children}`) : onPress && onPress())}
+      style={{ ...style }}
+      disabled={touch}
+      activeOpacity={1}
+    >
+      <Text
+        ellipsizeMode={ellipseMode}
+        style={[
+          {
+            fontSize: fontScale(fontSize),
+            color: color,
+            lineHeight: lineHeight ? lineHeight : undefined,
+            fontWeight: fontWeight,
+            marginBottom: distanceBottom,
+            textDecorationLine: textDecorationLine,
+            textAlign: textAlign,
+            textDecorationColor: textDecorationColor,
+            fontFamily: fontFamily,
+            textDecorationStyle: textDecorationStyle,
+            marginTop: distanceTop,
+          },
+          textStyle,
+        ]}
+        numberOfLines={numberOfLines}
+      >
+        {children}
+      </Text>
+    </TouchableOpacity>
+  );
 };
 
 TextComponent.defaultProps = defaultProps;

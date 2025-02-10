@@ -59,8 +59,29 @@ const formatNameTxt = (name: string) => {
   return "";
 };
 
-const upperCaseFirstChart = (str: string) => {
+const upperCaseFirstChart = (str?: string) => {
+  if (!str) {
+    return "";
+  }
   return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+const formatId = (id?: number): string => {
+  if (id) {
+    return `#${id.toString().padStart(4, "0")}`;
+  }
+  return "#0000";
+};
+
+const formatVersion = (version?: string): string => {
+  if (version) {
+    return version
+      .split("-")
+      .map((i) => i.charAt(0))
+      .join("&")
+      .toUpperCase();
+  }
+  return "";
 };
 
 const STRING_CONVERTER = {
@@ -72,5 +93,7 @@ const STRING_CONVERTER = {
   formatNameTxt,
   computedText,
   upperCaseFirstChart,
+  formatId,
+  formatVersion,
 };
 export { STRING_CONVERTER };

@@ -14,6 +14,7 @@ const HomeScreens = () => {
   });
   useEffect(() => {
     dispatch(ReduxAction.HOME_ACTION.getPokedex(10));
+    dispatch(ReduxAction.HOME_ACTION.getVersionPokemon());
   }, []);
 
   return (

@@ -6,12 +6,13 @@ import { CText } from "@/components";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 interface Props {
-  value: string | number | boolean | undefined;
+  value?: string | number | boolean | undefined;
   label: string | undefined;
   isLine?: boolean;
   iconName?: string;
   trailingComponent?: () => React.ReactNode;
   isDirection?: "row" | "column";
+  valueComponent?: () => React.ReactNode;
 }
 
 const LabelValueComponent = (props: Props) => {
@@ -22,6 +23,7 @@ const LabelValueComponent = (props: Props) => {
     iconName,
     trailingComponent,
     isDirection = "column",
+    valueComponent,
   } = props;
 
   if (isDirection === "row") {
@@ -81,22 +83,33 @@ const LabelValueComponent = (props: Props) => {
             distanceBottom={4}
             color={GET_COLORS().BLACK_3}
             fontWeight={"bold"}
-            fontSize={16}
-            numberOfLines={5}
+            fontSize={14}
+            numberOfLines={10}
+            style={{
+              flex: 1,
+            }}
           >
             {label}
           </CText>
-          <CText
-            fontSize={16}
-            fontWeight={"500"}
-            color={GET_COLORS().BLACK_4}
+          <View
             style={{
-              flex: 1,
+              flex: 2,
               marginHorizontal: scale(24),
             }}
           >
-            {typeof value === "boolean" ? (value ? "Có" : "Không") : value}
-          </CText>
+            {valueComponent ? (
+              valueComponent()
+            ) : (
+              <CText
+                fontSize={14}
+                fontWeight={"500"}
+                textAlign={"left"}
+                color={GET_COLORS().BLACK_4}
+              >
+                {typeof value === "boolean" ? (value ? "Có" : "Không") : value}
+              </CText>
+            )}
+          </View>
         </View>
         {trailingComponent && trailingComponent()}
       </View>

@@ -4,6 +4,7 @@ import { HomeInitialStateType } from "@/redux/Home/Type";
 const initialState: HomeInitialStateType = {
   listPokedex: [],
   pokemonInfo: {},
+  versions: [],
 };
 
 const HomeReducer = (
@@ -28,6 +29,11 @@ const HomeReducer = (
       return {
         ...state,
         pokemonInfo: { ...action.payload },
+      };
+    case HOME_ACTION.GET_VERSION_POKEMON_SUCCESS:
+      return {
+        ...state,
+        versions: action.payload,
       };
     default:
       return {

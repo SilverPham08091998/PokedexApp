@@ -11,6 +11,7 @@ import TabEvolution from "@/screens/PokemonInfoScreen/components/TabEvolution";
 import TabMoves from "@/screens/PokemonInfoScreen/components/TabMoves";
 import TabViewComponent from "@/components/TabView";
 import { scale } from "react-native-utils-scale";
+import TabEntries from "@/screens/PokemonInfoScreen/components/TabEntries";
 
 interface Props {}
 
@@ -27,6 +28,8 @@ const TabViewPokemonInfo: React.FC<Props> = (props: Props) => {
         return <TabEvolution />;
       case ROUTE.MOVES:
         return <TabMoves />;
+      case ROUTE.ENTRIES:
+        return <TabEntries />;
       default:
         return null;
     }

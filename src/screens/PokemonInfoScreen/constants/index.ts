@@ -1,10 +1,12 @@
-import { RoutesType } from "@/type";
+import { ResourceLink, RoutesType } from "@/type";
 
 export enum ROUTE {
   ABOUT = "ABOUT",
   STATS = "STATS",
   EVOLUTION = "EVOLUTION",
   MOVES = "MOVES",
+  ENTRIES = "ENTRIES",
+  FORMS = "FORMS",
 }
 
 export const pokemonInfoRoutes: Array<RoutesType> = [
@@ -33,4 +35,21 @@ export const pokemonInfoRoutes: Array<RoutesType> = [
     disable: false,
     index: 3,
   },
+  {
+    key: ROUTE.ENTRIES,
+    title: "Entries",
+    disable: false,
+    index: 4,
+  },
+  {
+    key: ROUTE.FORMS,
+    title: "Forms",
+    disable: false,
+    index: 5,
+  },
 ];
+
+export const MORE_ITEM: ResourceLink = {
+  name: "More",
+  url: "",
+};

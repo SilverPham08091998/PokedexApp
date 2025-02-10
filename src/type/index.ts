@@ -1,8 +1,10 @@
-import { ListPokedex, PokemonInfo, ResourceLink } from "@/type/PokemonInfo";
+import { ListCommon, PokemonInfo, ResourceLink } from "@/type/PokemonInfo";
 import { PokemonSpecies } from "@/type/PokemonSpecies";
 import { PokemonTypeColors } from "@/type/PokemonType";
 import { Item } from "./Item";
 import { EvolutionChain } from "./PokemonEvolutionChain";
+import { PokemonMove } from "./Move";
+import { PokemonVersionColors } from "@/type/PokemonVersion";
 
 export interface ApiSuccessResponse<T> {
   success: boolean;
@@ -88,9 +90,10 @@ export interface PayloadActionType<T> {
 export type {
   PokemonInfo,
   PokemonSpecies,
-  ListPokedex,
+  ListCommon,
   ResourceLink,
   EvolutionChain,
   Item,
+  PokemonMove,
 };
-export { PokemonTypeColors };
+export { PokemonTypeColors, PokemonVersionColors };

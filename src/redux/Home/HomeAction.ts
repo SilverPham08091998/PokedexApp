@@ -8,12 +8,22 @@ export const HOME_ACTION = {
   GET_POKEMON_INFO: "GET_POKEMON_INFO",
   GET_POKEMON_INFO_SUCCESS: "GET_POKEMON_INFO_SUCCESS",
   GET_POKEMON_INFO_FAILED: "GET_POKEMON_INFO_FAILED",
+
+  GET_VERSION_POKEMON: "GET_VERSION_POKEMON",
+  GET_VERSION_POKEMON_SUCCESS: "GET_VERSION_POKEMON_SUCCESS",
+  GET_VERSION_POKEMON_FAILED: "GET_VERSION_POKEMON_FAILED",
 };
 
 export const getPokedex = (limit: number) => {
   return {
     type: HOME_ACTION.GET_POKEDEX,
     payload: limit,
+  };
+};
+
+export const getVersionPokemon = () => {
+  return {
+    type: HOME_ACTION.GET_VERSION_POKEMON,
   };
 };
 export const getPokemonInfo = (pokemon: PokemonInfo) => {
@@ -25,4 +35,5 @@ export const getPokemonInfo = (pokemon: PokemonInfo) => {
 export const HomeAction = {
   getPokedex,
   getPokemonInfo,
+  getVersionPokemon,
 };

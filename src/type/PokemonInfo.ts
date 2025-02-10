@@ -112,7 +112,7 @@ export interface PokemonType {
   type: ResourceLink;
 }
 
-export interface ListPokedex {
+export interface ListCommon {
   count: number;
   next: string;
   previous: string;

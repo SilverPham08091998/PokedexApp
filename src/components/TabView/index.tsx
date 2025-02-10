@@ -63,7 +63,7 @@ const TabViewComponent = (props: Props) => {
           <View style={{ flex: 1, backgroundColor: GET_COLORS().WHITE }} />
         )
       }
-      renderScene={(props) => {
+      renderScene={(sceneRendererProps) => {
         return (
           <View
             style={{
@@ -74,19 +74,19 @@ const TabViewComponent = (props: Props) => {
               ...sceneContainerStyle,
             }}
           >
-            {renderScene(props)}
+            {renderScene(sceneRendererProps)}
           </View>
         );
       }}
       onIndexChange={(i) => setIndex(i)}
       initialLayout={{ width: layout.width }}
-      renderTabBar={(props) => {
+      renderTabBar={(tabBarProps) => {
         if (renderTabBar) {
-          return renderTabBar(props);
+          return renderTabBar(tabBarProps);
         }
         return (
           <TabBar
-            {...props}
+            {...tabBarProps}
             scrollEnabled={true}
             style={{
               backgroundColor: GET_COLORS().WHITE,
@@ -104,8 +104,8 @@ const TabViewComponent = (props: Props) => {
                 </CText>
               );
             }}
-            renderTabBarItem={(props) => {
-              return <TabBarItem {...props} />;
+            renderTabBarItem={(tabBarItemProps) => {
+              return <TabBarItem {...tabBarItemProps} />;
             }}
             indicatorStyle={{
               backgroundColor: GET_COLORS().PRIMARY,

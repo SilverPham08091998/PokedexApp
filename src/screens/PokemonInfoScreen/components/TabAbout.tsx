@@ -15,41 +15,62 @@ const TabAbout: React.FC<Props> = () => {
   });
   const renderAbility = () => {
     return (
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <CText fontSize={16} fontWeight={"700"} color={COLORS_LIGHT.BLACK_3}>
-          {"Ability"}
-        </CText>
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            gap: scale(4),
-            paddingRight: scale(0),
-            flex: 1,
-            marginHorizontal: scale(24),
-          }}
-        >
-          {info &&
-            info?.abilities.map((item, index) => {
-              return (
-                <Animated.View
-                  key={index}
-                  layout={Layout.springify().mass(0.8)}
+      <View
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          gap: scale(4),
+          paddingRight: scale(0),
+        }}
+      >
+        {info &&
+          info?.abilities.map((item, index) => {
+            return (
+              <Animated.View key={index} layout={Layout.springify().mass(0.8)}>
+                <CText
+                  fontSize={14}
+                  fontWeight={"500"}
+                  color={COLORS_LIGHT.FRONT_WAVE_COLOR}
+                  textDecorationLine={"underline"}
                 >
-                  <CText
-                    fontSize={16}
-                    fontWeight={"500"}
-                    color={COLORS_LIGHT.FRONT_WAVE_COLOR}
-                    textDecorationLine={"underline"}
-                  >
-                    {`${STRING_CONVERTER.upperCaseFirstChart(
-                      item.ability.name
-                    )} ${item.is_hidden ? "(Hidden Ability)" : ""}`}
-                  </CText>
-                </Animated.View>
-              );
-            })}
-        </View>
+                  {`${STRING_CONVERTER.upperCaseFirstChart(
+                    item.ability.name
+                  )} ${item.is_hidden ? "(Hidden Ability)" : ""}`}
+                </CText>
+              </Animated.View>
+            );
+          })}
+      </View>
+    );
+  };
+  const renderLocalNo = () => {
+    return (
+      <View
+        style={{
+          flexDirection: "column",
+          flexWrap: "wrap",
+          gap: scale(4),
+          paddingRight: scale(0),
+        }}
+      >
+        {species &&
+          species?.pokedex_numbers.map((item, index) => {
+            return (
+              <Animated.View key={index} layout={Layout.springify().mass(0.8)}>
+                <CText
+                  fontSize={14}
+                  fontWeight={"500"}
+                  color={COLORS_LIGHT.BLACK_4}
+                >
+                  {`${STRING_CONVERTER.formatId(
+                    item?.entry_number
+                  )} (${STRING_CONVERTER.upperCaseFirstChart(
+                    item.pokedex.name
+                  )})`}
+                </CText>
+              </Animated.View>
+            );
+          })}
       </View>
     );
   };
@@ -58,48 +79,111 @@ const TabAbout: React.FC<Props> = () => {
       style={{
         flex: 1,
         paddingHorizontal: scale(12),
-        paddingVertical: scale(12),
       }}
+      showsVerticalScrollIndicator={false}
     >
-      <CText fontSize={17} fontWeight={"bold"} distanceBottom={8}>
-        {species?.flavor_text_entries[0].flavor_text.replace(/[\n\f]/g, " ")}
-      </CText>
+      {/*<CText fontSize={17} fontWeight={"bold"} distanceBottom={8}>*/}
+      {/*  {species?.flavor_text_entries[0].flavor_text.replace(/[\n\f]/g, " ")}*/}
+      {/*</CText>*/}
       <CText
-        fontSize={17}
+        fontSize={18}
         fontWeight={"700"}
         color={COLORS_LIGHT.BLACK_2}
         distanceBottom={12}
+        textDecorationLine={"underline"}
       >
-        {"About"}
+        {"Pokédex data"}
       </CText>
-      <LabelValueComponent value={`${info?.height} m`} label={"Height"} />
-      <LabelValueComponent value={`${info?.weight} kg`} label={"Weight"} />
+      <LabelValueComponent
+        value={`${STRING_CONVERTER.formatId(info?.id)}`}
+        label={"National No"}
+        isLine={true}
+      />
+      <LabelValueComponent
+        value={`${info?.height} m`}
+        label={"Height"}
+        isLine={true}
+      />
+      <LabelValueComponent
+        value={`${info?.weight} kg`}
+        label={"Weight"}
+        isLine={true}
+      />
 
-      {renderAbility()}
+      <LabelValueComponent
+        label={"Ability"}
+        valueComponent={renderAbility}
+        isLine={true}
+      />
+      <LabelValueComponent
+        label={"Local No"}
+        valueComponent={renderLocalNo}
+        isLine={true}
+      />
       <CText
-        fontSize={17}
+        fontSize={18}
         fontWeight={"700"}
         color={COLORS_LIGHT.BLACK_2}
+        textDecorationLine={"underline"}
         distanceBottom={12}
-        distanceTop={12}
       >
-        {"Other"}
+        {"Training"}
       </CText>
       <LabelValueComponent
-        value={`${species?.egg_groups[0]?.name}`}
-        label={"Egg Groups"}
+        value={`${info?.stats
+          .filter((i) => i.effort)
+          .map(
+            (value) =>
+              `${value.effort} ${STRING_CONVERTER.upperCaseFirstChart(
+                value.stat.name
+              )}`
+          )
+          .join(", ")}`}
+        label={"EV yield"}
+        isLine={true}
       />
       <LabelValueComponent
-        value={`${species?.egg_groups[1]?.name}`}
-        label={"Egg Cycle"}
-      />
-      <LabelValueComponent
-        value={`${species?.growth_rate.name}`}
-        label={"Growth Rate"}
-      />
-      <LabelValueComponent
-        value={`${species?.capture_rate} %`}
+        value={`${species?.capture_rate}% (5.9% with PokéBall, full HP)`}
         label={"Capture Rate"}
+        isLine={true}
+      />
+      <LabelValueComponent
+        value={`${STRING_CONVERTER.upperCaseFirstChart(
+          species?.growth_rate.name
+        )}`}
+        label={"Growth Rate"}
+        isLine={true}
+      />
+      <LabelValueComponent
+        value={`${species?.base_happiness} (Normal)`}
+        label={"Base Friendship"}
+        isLine={true}
+      />
+      <CText
+        fontSize={18}
+        fontWeight={"700"}
+        color={COLORS_LIGHT.BLACK_2}
+        textDecorationLine={"underline"}
+        distanceBottom={12}
+      >
+        {"Breeding"}
+      </CText>
+      <LabelValueComponent
+        value={`${species?.egg_groups
+          .map((i) => STRING_CONVERTER.upperCaseFirstChart(i.name))
+          .join(", ")}`}
+        label={"Egg Groups"}
+        isLine={true}
+      />
+      <LabelValueComponent
+        value={`${species?.hatch_counter} (4,884–5,140 steps)`}
+        label={"Egg Cycles"}
+        isLine={true}
+      />
+      <LabelValueComponent
+        value={"87.5% male, 12.5% female"}
+        label={"Gender"}
+        isLine={true}
       />
     </ScrollView>
   );
