@@ -14,6 +14,7 @@ import { REDUX_ACTION } from "@/redux";
 import NetInfo from "@react-native-community/netinfo";
 import { useAppDispatch } from "@/util";
 import PokemonInfoStack from "@/navigator/PokemonInfoNavigator";
+import SplashScreen from "@/screens/SplashScreen";
 
 const Stack = createNativeStackNavigator<CombineStackParamList>();
 
@@ -34,9 +35,10 @@ const Navigator = () => {
     <NavigationContainer independent={true} ref={navigationRef}>
       <StatusBar backgroundColor={"transparent"} translucent />
       <Stack.Navigator
-        initialRouteName={SCREEN_NAME.MAIN_STACK}
+        initialRouteName={SCREEN_NAME.SPLASH}
         screenOptions={{ headerShown: false }}
       >
+        <Stack.Screen name={SCREEN_NAME.SPLASH} component={SplashScreen} />
         <Stack.Screen name={SCREEN_NAME.MAIN_STACK} component={BottomTabHome} />
         <Stack.Screen name={SCREEN_NAME.HOME_STACK} component={HomeStack} />
         <Stack.Screen name={SCREEN_NAME.SEARCH_STACK} component={SearchStack} />

@@ -32,34 +32,21 @@ export interface TextProps {
   distanceTop?: number;
 }
 
-const defaultProps = {
-  style: {},
-  fontSize: 14,
-  bold: false,
-  touch: false,
-  color: GET_COLORS()?.BLACK_2,
-  lineHeight: undefined,
-  onPress: () => null,
-  ellipseMode: undefined,
-  copy: false,
-};
-
 const copyText = (content: string) => {
   Clipboard.setString(content);
 };
 
 const TextComponent: React.FC<React.PropsWithChildren<TextProps>> = (props) => {
   const {
-    touch,
     numberOfLines,
     onPress,
     fontSize = 14,
-    color,
+    color = GET_COLORS()?.BLACK_2,
     style,
     children,
     lineHeight,
     ellipseMode,
-    copy,
+    copy = false,
     fontWeight = "500",
     distanceBottom = 0,
     textDecorationLine = undefined,
@@ -69,6 +56,7 @@ const TextComponent: React.FC<React.PropsWithChildren<TextProps>> = (props) => {
     fontFamily = undefined,
     distanceTop = 0,
     textStyle,
+    touch = false,
   } = props;
 
   return (
@@ -103,7 +91,5 @@ const TextComponent: React.FC<React.PropsWithChildren<TextProps>> = (props) => {
     </TouchableOpacity>
   );
 };
-
-TextComponent.defaultProps = defaultProps;
 
 export default TextComponent;

@@ -11,6 +11,7 @@ import { ProductDetailScreen, ProductScreen } from "@/screens/ProductScreen";
 import { SettingScreen } from "@/screens/SettingScreen";
 
 export * from "./PokemonInfoScreen";
+export * from "./SplashScreen";
 export {
   CategoriesScreen,
   HomeScreens,

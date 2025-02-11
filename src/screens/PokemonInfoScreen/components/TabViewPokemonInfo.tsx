@@ -15,7 +15,7 @@ import TabEntries from "@/screens/PokemonInfoScreen/components/TabEntries";
 
 interface Props {}
 
-const TabViewPokemonInfo: React.FC<Props> = (props: Props) => {
+const TabViewPokemonInfo: React.FC<Props> = () => {
   const renderScene = (
     sceneRenderProps: SceneRendererProps & { route: RoutesType }
   ) => {

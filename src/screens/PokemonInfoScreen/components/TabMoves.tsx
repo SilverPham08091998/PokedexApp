@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   ScrollView,
@@ -16,6 +16,7 @@ import { PokemonTypeColors, PokemonVersionColors } from "@/type";
 import { MORE_ITEM } from "@/screens/PokemonInfoScreen/constants";
 import { MoveInfo } from "@/type/Move";
 import { VersionGroupDetail } from "@/type/PokemonInfo";
+import { EmptyList } from "@/components/Pagination";
 
 interface Props {}
 
@@ -25,6 +26,12 @@ enum MOVE {
   MACHINE = "MACHINE",
   EGG = "EGG",
 }
+
+const WIDTH_CAT = 100;
+const WIDTH_POWER = 50;
+const WIDTH_ACC = 35;
+const WIDTH_PP = 35;
+const WIDTH_TM_LV = 50;
 
 const TabMoves: React.FC<Props> = () => {
   const { versions } = useAppSelector((state) => {
@@ -38,7 +45,7 @@ const TabMoves: React.FC<Props> = () => {
 
   useEffect(() => {
     if (versions && versions.length > 1) {
-      setCurrentVersion(versions[0].name);
+      setCurrentVersion(versions[24].name);
     }
   }, []);
 
@@ -48,7 +55,9 @@ const TabMoves: React.FC<Props> = () => {
     moveLearntBy: MOVE
   ) => {
     const learnMethod = versionGroup.find(
-      (i) => i.version_group.name.toUpperCase() === currentVersion
+      (i) =>
+        i.version_group.name.toUpperCase() === currentVersion &&
+        i.move_learn_method.name.toUpperCase() === moveLearntBy
     );
     const colorType = PokemonTypeColors[move.type.name.toUpperCase()];
     return (
@@ -58,9 +67,13 @@ const TabMoves: React.FC<Props> = () => {
           fontWeight={"bold"}
           color={colorType}
           textAlign={"center"}
-          style={{ width: scale(50) }}
+          style={{ width: scale(WIDTH_TM_LV) }}
         >
-          {learnMethod?.level_learned_at}
+          {moveLearntBy === MOVE.LEVEL_UP
+            ? learnMethod?.level_learned_at
+            : moveLearntBy === MOVE.MACHINE
+            ? move.id
+            : ""}
         </CText>
         <View style={{ flex: 1 }}>
           <CText
@@ -90,7 +103,7 @@ const TabMoves: React.FC<Props> = () => {
           fontSize={14}
           textAlign={"center"}
           fontWeight={"bold"}
-          style={{ width: scale(80) }}
+          style={{ width: scale(WIDTH_CAT) }}
         >
           {STRING_CONVERTER.upperCaseFirstChart(move.damage_class.name)}
         </CText>
@@ -98,7 +111,7 @@ const TabMoves: React.FC<Props> = () => {
           fontSize={14}
           textAlign={"center"}
           fontWeight={"bold"}
-          style={{ width: scale(50) }}
+          style={{ width: scale(WIDTH_POWER) }}
         >
           {move?.power || "--"}
         </CText>
@@ -106,7 +119,7 @@ const TabMoves: React.FC<Props> = () => {
           fontSize={14}
           textAlign={"center"}
           fontWeight={"bold"}
-          style={{ width: scale(35) }}
+          style={{ width: scale(WIDTH_ACC) }}
         >
           {move?.accuracy || "--"}
         </CText>
@@ -114,7 +127,7 @@ const TabMoves: React.FC<Props> = () => {
           fontSize={14}
           textAlign={"center"}
           fontWeight={"bold"}
-          style={{ width: scale(35) }}
+          style={{ width: scale(WIDTH_PP) }}
         >
           {move?.pp || "--"}
         </CText>
@@ -123,30 +136,48 @@ const TabMoves: React.FC<Props> = () => {
   };
 
   const renderMove = (moveLearntBy: MOVE, title?: string) => {
+    let movesData = moves?.filter((move) =>
+      move.version_group_details.some(
+        (version) =>
+          version.version_group.name.toUpperCase() === currentVersion &&
+          version.move_learn_method.name.toUpperCase() === moveLearntBy
+      )
+    );
+    if (moveLearntBy === MOVE.MACHINE) {
+      movesData?.sort((move1, move2) => move1.move.id - move2.move.id);
+    }
+    if (moveLearntBy === MOVE.LEVEL_UP) {
+      movesData?.sort((moveFirst, moveSecond) => {
+        const levelUpMoveFirst =
+          moveFirst?.version_group_details?.find(
+            (i) => i.version_group.name.toUpperCase() === currentVersion
+          )?.level_learned_at || 0;
+        const levelUpMoveSecond =
+          moveSecond?.version_group_details.find(
+            (i) => i.version_group.name.toUpperCase() === currentVersion
+          )?.level_learned_at || 0;
+
+        return levelUpMoveFirst - levelUpMoveSecond;
+      });
+    }
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, marginBottom: scale(12) }}>
         <CText
           fontSize={18}
           fontWeight={"bold"}
           style={{ alignSelf: "center" }}
         >
-          {title || "Moves learnt by level up"}
+          {title}
         </CText>
         <FlatList
           scrollEnabled={false}
-          data={moves?.filter((move) =>
-            move.version_group_details.some(
-              (version) =>
-                version.version_group.name.toUpperCase() === currentVersion &&
-                version.move_learn_method.name.toUpperCase() === moveLearntBy
-            )
-          )}
+          data={movesData}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => {
             return renderMoveItem(
               item.move,
               item.version_group_details,
-              MOVE.LEVEL_UP
+              moveLearntBy
             );
           }}
           ItemSeparatorComponent={() => <View style={{ height: scale(8) }} />}
@@ -161,20 +192,23 @@ const TabMoves: React.FC<Props> = () => {
                 fontSize={14}
                 fontWeight={"bold"}
                 style={{
-                  width: scale(50),
+                  width: scale(WIDTH_TM_LV),
                   backgroundColor: rgba(COLORS_LIGHT.RED, 0.1),
                   alignItems: "center",
                   justifyContent: "center",
                 }}
               >
-                {"Lv."}
+                {moveLearntBy === MOVE.LEVEL_UP
+                  ? "Lv."
+                  : moveLearntBy === MOVE.MACHINE
+                  ? "TM."
+                  : ""}
               </CText>
 
               <CText
                 fontSize={16}
                 fontWeight={"bold"}
                 style={{
-                  height: scale(30),
                   backgroundColor: rgba(COLORS_LIGHT.PRIMARY, 0.1),
                   justifyContent: "center",
                   flex: 1,
@@ -187,8 +221,7 @@ const TabMoves: React.FC<Props> = () => {
                 textAlign={"center"}
                 fontWeight={"bold"}
                 style={{
-                  width: scale(80),
-                  height: scale(30),
+                  width: scale(WIDTH_CAT),
                   backgroundColor: rgba(COLORS_LIGHT.RED, 0.1),
                   justifyContent: "center",
                 }}
@@ -200,8 +233,7 @@ const TabMoves: React.FC<Props> = () => {
                 textAlign={"center"}
                 fontWeight={"bold"}
                 style={{
-                  width: scale(50),
-                  height: scale(30),
+                  width: scale(WIDTH_POWER),
                   backgroundColor: rgba(COLORS_LIGHT.PRIMARY, 0.1),
                   justifyContent: "center",
                 }}
@@ -213,8 +245,7 @@ const TabMoves: React.FC<Props> = () => {
                 textAlign={"center"}
                 fontWeight={"bold"}
                 style={{
-                  width: scale(35),
-                  height: scale(30),
+                  width: scale(WIDTH_ACC),
                   backgroundColor: rgba(COLORS_LIGHT.RED, 0.1),
                   justifyContent: "center",
                 }}
@@ -226,8 +257,7 @@ const TabMoves: React.FC<Props> = () => {
                 textAlign={"center"}
                 fontWeight={"bold"}
                 style={{
-                  width: scale(35),
-                  height: scale(30),
+                  width: scale(WIDTH_PP),
                   backgroundColor: rgba(COLORS_LIGHT.PRIMARY, 0.1),
                   justifyContent: "center",
                 }}
@@ -237,10 +267,18 @@ const TabMoves: React.FC<Props> = () => {
             </View>
           )}
           ListFooterComponent={() => <View style={{ height: scale(8) }} />}
+          ListEmptyComponent={<EmptyList />}
         />
       </View>
     );
   };
+
+  const renderMoveCallback = useCallback(
+    (moveLearntBy: MOVE, title?: string) => {
+      return renderMove(moveLearntBy, title);
+    },
+    [currentVersion]
+  );
 
   return (
     <View style={{ flex: 1 }}>
@@ -249,10 +287,10 @@ const TabMoves: React.FC<Props> = () => {
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
-        {renderMove(MOVE.LEVEL_UP)}
-        {renderMove(MOVE.TUTOR)}
-        {renderMove(MOVE.MACHINE)}
-        {renderMove(MOVE.EGG)}
+        {renderMoveCallback(MOVE.LEVEL_UP, "Moves learnt by level up")}
+        {renderMoveCallback(MOVE.TUTOR, "Moves learnt by tutor")}
+        {renderMoveCallback(MOVE.MACHINE, "Moves learnt by TM")}
+        {renderMoveCallback(MOVE.EGG, "Moves learnt by egg")}
       </ScrollView>
       <FloatingActionGroups
         //@ts-ignore
@@ -289,7 +327,9 @@ const TabMoves: React.FC<Props> = () => {
                     onPress={() => {
                       if (!isSelected) {
                         setCurrentVersion(item.name.toUpperCase());
-                        setIsShow(false);
+                        setTimeout(() => {
+                          setIsShow(false);
+                        }, 100);
                       }
                     }}
                     style={{
@@ -305,6 +345,7 @@ const TabMoves: React.FC<Props> = () => {
                       color={isSelected ? colorVersion : GET_COLORS().BLACK_1}
                       style={{
                         width: DEVICE_WIDTH - scale(isSelected ? 96 : 72),
+                        flex: 1,
                       }}
                     >
                       {`${item.name.toUpperCase()} (${STRING_CONVERTER.formatVersion(

@@ -1,17 +1,32 @@
 import React from "react";
 import { PokemonInfo, PokemonTypeColors } from "@/type";
-import { FlatList, ImageBackground, View } from "react-native";
+import {
+  FlatList,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { GET_COLORS, IMAGE_URL, rgba } from "@/theme";
 import { CImage, CText } from "@/components";
 import { scale } from "react-native-utils-scale";
-import { DEVICE_WIDTH, NAVIGATION, SCREEN_NAME } from "@/util";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { DEVICE_WIDTH, NAVIGATION, SCREEN_NAME, useAppDispatch } from "@/util";
+import Animated, {
+  Easing,
+  StretchInX,
+  StretchOutY,
+} from "react-native-reanimated";
+import { ReduxAction } from "@/redux";
+
+const AnimatedTouchableOpacity =
+  Animated.createAnimatedComponent(TouchableOpacity);
 
 interface Props {
   item: PokemonInfo;
 }
 
 const PokemonItem: React.FC<Props> = (props: Props) => {
+  const dispatch = useAppDispatch();
   const { item } = props;
   const primaryType =
     item.types.find((type) => type.slot === 1)?.type.name || "";
@@ -26,12 +41,8 @@ const PokemonItem: React.FC<Props> = (props: Props) => {
           return (
             <View
               style={{
+                ...styles.typeContainer,
                 backgroundColor: rgba(colorType, 0.6),
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: scale(6),
-                width: scale(70),
-                paddingVertical: scale(1),
               }}
             >
               <CText
@@ -52,22 +63,38 @@ const PokemonItem: React.FC<Props> = (props: Props) => {
   };
 
   return (
-    <TouchableOpacity
+    <AnimatedTouchableOpacity
+      entering={StretchInX.springify()
+        .damping(30)
+        .mass(5)
+        .stiffness(10)
+        .overshootClamping(1)
+        .restDisplacementThreshold(0.1)
+        .restSpeedThreshold(5)
+        .easing(Easing.ease)
+        .duration(500)}
+      exiting={StretchOutY.springify()
+        .damping(30)
+        .mass(5)
+        .stiffness(10)
+        .overshootClamping(1)
+        .restDisplacementThreshold(0.1)
+        .restSpeedThreshold(5)
+        .easing(Easing.ease)
+        .duration(100)}
       onPress={() => {
-        NAVIGATION.navigate(
-          SCREEN_NAME.POKEMON_INFO_STACK,
-          SCREEN_NAME.POKEMON_INFO,
-          { pokemon: item }
+        dispatch(
+          ReduxAction.HOME_ACTION.getPokemonInfo(item, () => {
+            NAVIGATION.navigate(
+              SCREEN_NAME.POKEMON_INFO_STACK,
+              SCREEN_NAME.POKEMON_INFO,
+              { pokemon: item }
+            );
+          })
         );
       }}
       activeOpacity={0.5}
-      style={{
-        backgroundColor: rgba(colorPrimary, 0.6),
-        height: scale(120),
-        padding: scale(8),
-        width: DEVICE_WIDTH / 2 - scale(8),
-        borderRadius: scale(12),
-      }}
+      style={{ ...styles.container, backgroundColor: rgba(colorPrimary, 0.6) }}
     >
       <View style={{ paddingHorizontal: scale(4), alignItems: "flex-start" }}>
         <CText
@@ -82,26 +109,44 @@ const PokemonItem: React.FC<Props> = (props: Props) => {
         {renderPokemonType()}
       </View>
       <ImageBackground
-        style={{
-          flex: 1,
-          position: "absolute",
-          right: scale(4),
-          bottom: scale(4),
-        }}
+        style={styles.imageBackground}
         source={IMAGE_URL.pokeball}
         tintColor={rgba(colorPrimary, 0.6)}
       >
         <CImage
           url={item.sprites.front_default}
           resizeMode={"contain"}
-          style={{
-            width: scale(100),
-            height: scale(100),
-          }}
+          style={styles.imagePokemon}
         />
       </ImageBackground>
-    </TouchableOpacity>
+    </AnimatedTouchableOpacity>
   );
 };
 
 export default React.memo(PokemonItem);
+
+const styles = StyleSheet.create({
+  container: {
+    height: scale(120),
+    padding: scale(8),
+    width: DEVICE_WIDTH / 2 - scale(8),
+    borderRadius: scale(12),
+  },
+  imageBackground: {
+    flex: 1,
+    position: "absolute",
+    right: scale(4),
+    bottom: scale(4),
+  },
+  imagePokemon: {
+    width: scale(100),
+    height: scale(100),
+  },
+  typeContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: scale(6),
+    width: scale(70),
+    paddingVertical: scale(1),
+  },
+});

@@ -1,20 +1,12 @@
-import base64 from "react-native-base64";
-import { Source } from "react-native-fast-image";
-import { ImageURISource } from "react-native";
+import qs from "qs";
 
-export const getSitecoreSource = (url: any) => {
-  const username = "";
-  const password = "";
-  const authHeader = "Basic " + base64.encode(`${username}:${password}`);
-  return url
-    ? ({
-        uri:
-          "https://genvita-uat-sitecore.genvita.vn" ||
-          "http://203.167.9.185:8080",
-        headers: {
-          Authorization: authHeader,
-        },
-        // eslint-disable-next-line prettier/prettier
-        } as Source & ImageURISource)
-    : undefined;
+const getQueryParams = <T extends Record<string, any>>(url: string): T => {
+  const queryString = url.split("?")[1];
+  if (!queryString) return {} as T;
+
+  return qs.parse(queryString) as T;
+};
+
+export const URL_CONVERTER = {
+  getQueryParams,
 };

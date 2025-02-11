@@ -1285,7 +1285,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YL2UMBY3P4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PokedexApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1316,7 +1316,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YL2UMBY3P4;
 				INFOPLIST_FILE = PokedexApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

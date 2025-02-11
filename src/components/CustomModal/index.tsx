@@ -25,7 +25,7 @@ interface Props {
   renderHeader?: () => React.ReactNode;
   titleHeader?: string;
   headerStyle?: ViewStyle;
-  headerTextStyle?: TextStyle;
+  headerTextStyle?: ViewStyle;
   renderFooter?: () => React.ReactNode;
   onCloseModal: () => void;
   isShowHeader?: boolean;
@@ -64,7 +64,8 @@ const CModal: React.FC<Props> = (props: Props) => {
             fontSize={18}
             fontWeight={"700"}
             color={GET_COLORS().BLACK_4}
-            style={[{ flex: 1, textAlign: "center" }, headerTextStyle]}
+            style={{ flex: 1, ...headerTextStyle }}
+            textAlign={"center"}
           >
             {titleHeader}
           </CText>

@@ -1,5 +1,6 @@
 import {
   EvolutionChain,
+  ListCommon,
   PokemonInfo,
   PokemonMove,
   PokemonSpecies,
@@ -7,7 +8,7 @@ import {
 } from "@/type";
 
 export interface HomeInitialStateType {
-  listPokedex: Array<PokemonInfo>;
+  listPokedex?: ListCommon;
   pokemonInfo: {
     info?: PokemonInfo;
     species?: PokemonSpecies;

@@ -2,7 +2,6 @@ import { HOME_ACTION } from "./HomeAction";
 import { HomeInitialStateType } from "@/redux/Home/Type";
 
 const initialState: HomeInitialStateType = {
-  listPokedex: [],
   pokemonInfo: {},
   versions: [],
 };

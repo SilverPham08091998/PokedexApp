@@ -1,5 +1,4 @@
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
-import { CHeader } from "@/components";
 import { COLORS_LIGHT, GET_COLORS } from "@/theme";
 import React from "react";
 import { scale } from "react-native-utils-scale";
@@ -7,7 +6,6 @@ import { scale } from "react-native-utils-scale";
 const SearchScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <CHeader title={"Search"} isShowBack={true} />
       <ScrollView style={{ flex: 1 }} nestedScrollEnabled={true} />
     </SafeAreaView>
   );

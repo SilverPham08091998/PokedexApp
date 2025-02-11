@@ -12,6 +12,7 @@ export type RootStackParamList = {
   PRODUCT_STACK: undefined | { screen: string; params?: any };
   SETTING_STACK: undefined;
   POKEMON_INFO_STACK: undefined | { screen: string; params?: any };
+  SPLASH: undefined;
 };
 export type {
   ProductStackParamList,

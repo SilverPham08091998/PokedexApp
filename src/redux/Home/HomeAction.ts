@@ -1,4 +1,4 @@
-import { PokemonInfo } from "@/type";
+import { PayloadActionType, PokemonInfo } from "@/type";
 
 export const HOME_ACTION = {
   GET_POKEDEX: "GET_POKEDEX",
@@ -14,10 +14,10 @@ export const HOME_ACTION = {
   GET_VERSION_POKEMON_FAILED: "GET_VERSION_POKEMON_FAILED",
 };
 
-export const getPokedex = (limit: number) => {
+export const getPokedex = (url: string) => {
   return {
     type: HOME_ACTION.GET_POKEDEX,
-    payload: limit,
+    payload: url,
   };
 };
 
@@ -26,10 +26,14 @@ export const getVersionPokemon = () => {
     type: HOME_ACTION.GET_VERSION_POKEMON,
   };
 };
-export const getPokemonInfo = (pokemon: PokemonInfo) => {
+export const getPokemonInfo = (
+  pokemon: PokemonInfo,
+  callback?: () => void
+): PayloadActionType<PokemonInfo> => {
   return {
     type: HOME_ACTION.GET_POKEMON_INFO,
     payload: pokemon,
+    callback: callback,
   };
 };
 export const HomeAction = {

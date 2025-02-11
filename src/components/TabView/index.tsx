@@ -122,4 +122,4 @@ const TabViewComponent = (props: Props) => {
   );
 };
 
-export default React.memo(TabViewComponent);
+export default TabViewComponent;

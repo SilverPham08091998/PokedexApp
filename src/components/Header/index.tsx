@@ -51,12 +51,10 @@ const CHeader: React.FC<Props> = (props) => {
       <CText
         fontWeight={"700"}
         fontSize={18}
-        textAlign={"center"}
         style={{
           ...titleStyle,
           flex: 1,
           paddingHorizontal: scale(isShowBack ? 4 : 0),
-          alignItems: "center",
         }}
       >
         {title}

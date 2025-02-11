@@ -1,26 +1,18 @@
 import { StyleSheet, View } from "react-native";
-import { CImage, CText } from "@/components";
-import { GET_COLORS, IMAGE_URL } from "@/theme";
-import React from "react";
-import { scale } from "react-native-utils-scale";
+import { ANIMATION_JSON, GET_COLORS } from "@/theme";
+import React, { useEffect } from "react";
+import LottieView from "lottie-react-native";
+import { useAppDispatch } from "@/util";
+import { ReduxAction } from "@/redux";
 
 const SplashScreen = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(ReduxAction.APP_STATE_ACTION.setUpApp());
+  }, []);
   return (
     <View style={styles.container}>
-      <CImage
-        source={IMAGE_URL.avatar}
-        resizeMode={"contain"}
-        style={styles.image}
-      />
-      <CText
-        fontSize={30}
-        color={GET_COLORS()?.PRIMARY}
-        style={{
-          padding: scale(30),
-        }}
-      >
-        Avatar
-      </CText>
+      <LottieView source={ANIMATION_JSON.splash} autoPlay loop />
     </View>
   );
 };
@@ -30,9 +22,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: GET_COLORS()?.WHITE,
     alignItems: "center",
-    justifyContent: "center",
   },
-  image: { width: "100%", height: "80%" },
 });
 
 export default SplashScreen;

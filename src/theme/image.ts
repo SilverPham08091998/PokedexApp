@@ -8,6 +8,8 @@ const IMAGE_URL = {
   pokeball: require("../assets/images/pokeball.png"),
 };
 
-const ANIMATION_JSON = {};
+const ANIMATION_JSON = {
+  splash: require("../assets/lotties/splash.json"),
+};
 
 export { IMAGE_URL, ANIMATION_JSON };

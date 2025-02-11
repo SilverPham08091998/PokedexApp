@@ -15,6 +15,7 @@ import { invoke } from "@/redux/excute";
 import { EvolutionNode } from "@/type/PokemonEvolutionChain";
 import { Move } from "@/type/PokemonInfo";
 import { MoveInfo } from "@/type/Move";
+import { URL_CONVERTER } from "@/util/function";
 
 const HomeSaga = function* watchHome() {
   yield all([
@@ -48,12 +49,11 @@ function* handleVersionPokemon() {
   yield* invoke(execution, REDUX_ACTION.HOME_ACTION.GET_VERSION_POKEMON_FAILED);
 }
 
-function* handleGetPokedex(action: PayloadActionType<number>) {
+function* handleGetPokedex(action: PayloadActionType<string>) {
   const api = () => {
     return UtilApi.request<ListCommon>({
-      domain: `https://pokeapi.co/api/v2/pokemon?offset=0`,
+      domain: action.payload,
       method: "GET",
-      params: { limit: action.payload },
     });
   };
   const execution = function* (): Generator<Effect, void, any> {
@@ -78,9 +78,15 @@ function* handleGetPokedex(action: PayloadActionType<number>) {
         fetchPokedexData,
         response.results
       );
+      const queryParams: { limit: number; offset: number } =
+        URL_CONVERTER.getQueryParams(action.payload);
       yield put({
         type: REDUX_ACTION.HOME_ACTION.GET_POKEDEX_SUCCESS,
-        payload: pokedexResult,
+        payload: {
+          ...response,
+          page: queryParams.offset / queryParams.limit + 1,
+          data: pokedexResult,
+        },
       });
     }
   };
