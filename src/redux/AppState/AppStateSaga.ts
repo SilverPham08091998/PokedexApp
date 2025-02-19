@@ -24,9 +24,15 @@ function* setUp() {
       payload: {},
       isShowLoading: false,
     });
+    yield put<PayloadActionType<{}>>({
+      type: REDUX_ACTION.HOME_ACTION.GET_POKEMON_TYPE,
+      payload: {},
+      isShowLoading: false,
+    });
     yield all([
       take(REDUX_ACTION.HOME_ACTION.GET_POKEDEX_SUCCESS),
       take(REDUX_ACTION.HOME_ACTION.GET_VERSION_POKEMON_SUCCESS),
+      take(REDUX_ACTION.HOME_ACTION.GET_POKEMON_TYPE_SUCCESS),
     ]);
     yield put({
       type: REDUX_ACTION.APP_STATE_ACTION.SET_UP_APP_SUCCESS,

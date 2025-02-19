@@ -1,6 +1,6 @@
 import { ListCommon, PokemonInfo, ResourceLink } from "@/type/PokemonInfo";
 import { PokemonSpecies } from "@/type/PokemonSpecies";
-import { PokemonTypeColors } from "@/type/PokemonType";
+import { PokemonType, PokemonTypeColors } from "@/type/PokemonType";
 import { Item } from "./Item";
 import { EvolutionChain } from "./PokemonEvolutionChain";
 import { PokemonMove } from "./Move";
@@ -95,5 +95,6 @@ export type {
   EvolutionChain,
   Item,
   PokemonMove,
+  PokemonType,
 };
 export { PokemonTypeColors, PokemonVersionColors };

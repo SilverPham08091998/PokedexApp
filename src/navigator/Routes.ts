@@ -6,7 +6,7 @@ import { PokemonInfoStackParamList } from "./PokemonInfoNavigator/PokemonInfoSta
 export type RootStackParamList = {
   MAIN_STACK: undefined;
   HOME_STACK: undefined;
-  CATEGORIES_STACK: undefined;
+  CATEGORIES_STACK: undefined | { screen: string; params?: any };
   USER_STACK: undefined;
   SEARCH_STACK: undefined;
   PRODUCT_STACK: undefined | { screen: string; params?: any };
@@ -22,6 +22,7 @@ export type {
 };
 
 export type CombineStackParamList = RootStackParamList &
+  CategoriesStackParamList &
   ProductStackParamList &
   SettingStackParamList &
   PokemonInfoStackParamList;

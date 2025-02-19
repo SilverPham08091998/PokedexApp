@@ -54,7 +54,11 @@ const ButtonMaskedView = (props: Props) => {
 
   const tabBar = (color: string) => {
     return (
-      <View>
+      <View
+        style={{
+          height: heightTab,
+        }}
+      >
         <FlatList
           data={data}
           horizontal={true}
@@ -124,7 +128,7 @@ const ButtonMaskedView = (props: Props) => {
   }, [value]);
 
   return (
-    <View>
+    <View style={styles.container}>
       {tabBar(inActiveColor)}
       <MaskedViewAnimation
         style={styles.maskContainer}
@@ -152,7 +156,9 @@ const ButtonMaskedView = (props: Props) => {
 export default React.memo(ButtonMaskedView);
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    alignSelf: "center",
+  },
   separator: {
     width: scale(1),
     backgroundColor: "#DEDEDF",

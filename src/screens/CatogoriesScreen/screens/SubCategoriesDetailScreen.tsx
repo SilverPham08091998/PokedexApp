@@ -1,41 +1,55 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Header from "@/components/Header";
 import { scale } from "react-native-utils-scale";
 import { COLORS_LIGHT } from "@/theme";
-import { CText } from "@/components";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { SCREEN_NAME } from "@/util";
+import { CategoriesStackParamList } from "@/navigator/TabHomeNavigator/Categories/CategoriesStackParamsList";
+import { SceneRendererProps } from "react-native-tab-view";
+import { RoutesType } from "@/type";
+import TabViewComponent from "@/components/TabView";
+import { ROUTE, typeRoutes } from "@/screens/CatogoriesScreen/constants";
+import TabInfo from "@/screens/CatogoriesScreen/components/TabInfo";
+import TabPokemon from "@/screens/CatogoriesScreen/components/TabPokemon";
+import TabMove from "@/screens/CatogoriesScreen/components/TabMove";
 
-const SubCategoriesDetailScreen: React.FC<any> = () => {
-  const renderFilter = () => {
-    return (
-      <View style={styles.viewButtonFilter}>
-        <TouchableOpacity style={styles.buttonFilter} onPress={() => {}}>
-          <AntDesign name={"filter"} color={COLORS_LIGHT.BORDER_3} size={24} />
-          <CText fontSize={16} color={COLORS_LIGHT.BLACK_3} fontWeight={"500"}>
-            {"Lọc"}{" "}
-          </CText>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonFilter} onPress={() => {}}>
-          <Ionicons
-            name={"swap-vertical"}
-            color={COLORS_LIGHT.BORDER_3}
-            size={24}
-          />
-          <CText fontSize={16} color={COLORS_LIGHT.BLACK_3} fontWeight={"500"}>
-            {"Áp dụng"}
-          </CText>
-        </TouchableOpacity>
-      </View>
-    );
+interface Props
+  extends NativeStackScreenProps<
+    CategoriesStackParamList,
+    SCREEN_NAME.SUB_CATEGORIES_DETAIL
+  > {}
+
+const SubCategoriesDetailScreen: React.FC<Props> = (props) => {
+  const type = props.route.params?.type;
+  const renderScene = (
+    sceneRenderProps: SceneRendererProps & { route: RoutesType }
+  ) => {
+    switch (sceneRenderProps.route.key) {
+      case ROUTE.INFO:
+        return <TabInfo />;
+      case ROUTE.MOVES:
+        return <TabMove />;
+      case ROUTE.POKEMONS:
+        return <TabPokemon />;
+      default:
+        return null;
+    }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Header title={"Danh mục 1"} />
-      {renderFilter()}
-    </SafeAreaView>
+    <View style={styles.container}>
+      <Header title={type.name} />
+      <TabViewComponent
+        indexDefault={0}
+        renderScene={renderScene}
+        routesProps={typeRoutes}
+        sceneContainerStyle={{
+          paddingHorizontal: scale(12),
+          paddingVertical: scale(12),
+        }}
+      />
+    </View>
   );
 };
 

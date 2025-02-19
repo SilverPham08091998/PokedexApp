@@ -56,7 +56,7 @@ const TextComponent: React.FC<React.PropsWithChildren<TextProps>> = (props) => {
     fontFamily = undefined,
     distanceTop = 0,
     textStyle,
-    touch = false,
+    touch = true,
   } = props;
 
   return (

@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { GET_COLORS, IMAGE_URL, rgba } from "@/theme";
-import { CImage, CText } from "@/components";
+import { CImage, CPokemonType, CText } from "@/components";
 import { scale } from "react-native-utils-scale";
 import { DEVICE_WIDTH, NAVIGATION, SCREEN_NAME, useAppDispatch } from "@/util";
 import Animated, {
@@ -37,23 +37,7 @@ const PokemonItem: React.FC<Props> = (props: Props) => {
       <FlatList
         data={item.types}
         renderItem={({ item: itemType }) => {
-          const colorType = PokemonTypeColors[itemType.type.name.toUpperCase()];
-          return (
-            <View
-              style={{
-                ...styles.typeContainer,
-                backgroundColor: rgba(colorType, 0.6),
-              }}
-            >
-              <CText
-                fontSize={12}
-                fontWeight={"400"}
-                color={GET_COLORS().WHITE}
-              >
-                {`${itemType.type.name.toUpperCase()}`}
-              </CText>
-            </View>
-          );
+          return <CPokemonType type={itemType.type.name} />;
         }}
         ItemSeparatorComponent={() => <View style={{ height: scale(4) }} />}
         ListHeaderComponent={() => <View style={{ height: scale(4) }} />}

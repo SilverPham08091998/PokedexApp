@@ -24,3 +24,4 @@ export * from "./GlobalModal";
 export * from "./Check";
 export * from "./TextInput";
 export * from "./MaskView";
+export * from "./Pokemon";

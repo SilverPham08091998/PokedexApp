@@ -8,6 +8,7 @@ import {
   PokemonInfo,
   PokemonMove,
   PokemonSpecies,
+  PokemonType,
   ResourceLink,
 } from "@/type";
 import { REDUX_ACTION } from "@/redux";
@@ -16,12 +17,15 @@ import { EvolutionNode } from "@/type/PokemonEvolutionChain";
 import { Move } from "@/type/PokemonInfo";
 import { MoveInfo } from "@/type/Move";
 import { URL_CONVERTER } from "@/util/function";
+import { TypePokemon } from "@/type/PokemonType";
 
 const HomeSaga = function* watchHome() {
   yield all([
     takeLatest(HOME_ACTION.GET_POKEDEX, handleGetPokedex),
     takeLatest(HOME_ACTION.GET_POKEMON_INFO, handleGetPokemonInfo),
     takeLatest(HOME_ACTION.GET_VERSION_POKEMON, handleVersionPokemon),
+    takeLatest(HOME_ACTION.GET_POKEMON_TYPE, handlePokemonType),
+    takeLatest(HOME_ACTION.GET_POKEMON_TYPE_INFO, handleGetTypeInfo),
   ]);
 };
 
@@ -47,6 +51,44 @@ function* handleVersionPokemon() {
     }
   };
   yield* invoke(execution, REDUX_ACTION.HOME_ACTION.GET_VERSION_POKEMON_FAILED);
+}
+
+function* handlePokemonType() {
+  const api = () => {
+    return UtilApi.request<ListCommon>({
+      domain: `https://pokeapi.co/api/v2/type?limit=1000`,
+      method: "GET",
+    });
+  };
+  const execution = function* (): Generator<Effect, void, any> {
+    const response: ListCommon = yield call(api);
+    if (response?.results) {
+      const fetchTypesInfo = async (results: Array<ResourceLink>) => {
+        return await Promise.all(
+          results.map(async (item: ResourceLink) => {
+            const responseInfo: PokemonType =
+              await UtilApi.request<PokemonType>({
+                domain: item.url,
+                method: "GET",
+              });
+            return {
+              ...responseInfo,
+              name: responseInfo.name.toUpperCase(),
+            };
+          })
+        );
+      };
+      const types: Array<PokemonType> = yield call(
+        fetchTypesInfo,
+        response.results
+      );
+      yield put({
+        type: REDUX_ACTION.HOME_ACTION.GET_POKEMON_TYPE_SUCCESS,
+        payload: types,
+      });
+    }
+  };
+  yield* invoke(execution, REDUX_ACTION.HOME_ACTION.GET_POKEMON_TYPE_FAILED);
 }
 
 function* handleGetPokedex(action: PayloadActionType<string>) {
@@ -93,7 +135,9 @@ function* handleGetPokedex(action: PayloadActionType<string>) {
   yield* invoke(
     execution,
     REDUX_ACTION.HOME_ACTION.GET_POKEDEX_FAILED,
-    () => action.callback && action.callback()
+    () => action.callback && action.callback(),
+    undefined,
+    action.isShowLoading
   );
 }
 
@@ -159,6 +203,62 @@ function* handleGetPokemonInfo(action: PayloadActionType<PokemonInfo>) {
   yield* invoke(
     execution,
     REDUX_ACTION.HOME_ACTION.GET_POKEMON_INFO_FAILED,
+    () => action.callback && action.callback()
+  );
+}
+
+function* handleGetTypeInfo(action: PayloadActionType<PokemonType>) {
+  const execution = function* (): Generator<Effect, void, any> {
+    const fetchAllPokemon = async (pokemons: Array<TypePokemon>) => {
+      return await Promise.all(
+        pokemons.map(async (pokemon: TypePokemon) => {
+          const res = await UtilApi.request<PokemonInfo>({
+            domain: pokemon.pokemon.url,
+            method: "GET",
+          });
+          return {
+            ...res,
+            name: res.name.toUpperCase(),
+          };
+        })
+      );
+    };
+    const fetchAllMove = async (request: Array<ResourceLink>) => {
+      return await Promise.all(
+        request.map(async (item: ResourceLink) => {
+          const responseInfo: MoveInfo = await UtilApi.request<MoveInfo>({
+            domain: item.url,
+            method: "GET",
+          });
+          return {
+            ...responseInfo,
+            name: responseInfo?.name.toUpperCase(),
+          };
+        })
+      );
+    };
+    const moves: Array<PokemonMove> = yield call(
+      fetchAllMove,
+      action.payload.moves
+    );
+
+    const pokemons: Array<PokemonInfo> = yield call(
+      fetchAllPokemon,
+      action.payload.pokemon
+    );
+
+    yield put({
+      type: REDUX_ACTION.HOME_ACTION.GET_POKEMON_TYPE_INFO_SUCCESS,
+      payload: {
+        info: action.payload,
+        moves: moves,
+        pokemons: pokemons,
+      },
+    });
+  };
+  yield* invoke(
+    execution,
+    REDUX_ACTION.HOME_ACTION.GET_POKEMON_TYPE_INFO_FAILED,
     () => action.callback && action.callback()
   );
 }

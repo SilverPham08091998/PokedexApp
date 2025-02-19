@@ -21,7 +21,6 @@ export function* invoke<T>(
     if (!loading && isShowLoading) {
       yield put({ type: REDUX_ACTION.APP_STATE_ACTION.LOADING_SHOW });
     }
-    yield put({ type: REDUX_ACTION.APP_STATE_ACTION.LOADING_HIDE });
     yield* execution();
     callback && callback();
   } catch (error: any) {
