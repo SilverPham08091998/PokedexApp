@@ -17,6 +17,7 @@ import Animated, {
   StretchOutY,
 } from "react-native-reanimated";
 import { ReduxAction } from "@/redux";
+import { STRING_CONVERTER } from "@/util/function";
 
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
@@ -25,7 +26,7 @@ interface Props {
   item: PokemonInfo;
 }
 
-const PokemonItem: React.FC<Props> = (props: Props) => {
+const CPokemonItem: React.FC<Props> = (props: Props) => {
   const dispatch = useAppDispatch();
   const { item } = props;
   const primaryType =
@@ -90,6 +91,15 @@ const PokemonItem: React.FC<Props> = (props: Props) => {
         >
           {`${item.name.toUpperCase()}`}
         </CText>
+        <CText
+          fontSize={14}
+          textAlign={"right"}
+          fontWeight={"700"}
+          distanceBottom={4}
+          color={GET_COLORS().WHITE}
+        >
+          {`${STRING_CONVERTER.formatId(item.id)}`}
+        </CText>
         {renderPokemonType()}
       </View>
       <ImageBackground
@@ -107,7 +117,7 @@ const PokemonItem: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default React.memo(PokemonItem);
+export default React.memo(CPokemonItem);
 
 const styles = StyleSheet.create({
   container: {

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { PokemonInfoScreen } from "@/screens";
+import { MoveInfoScreen, PokemonInfoScreen } from "@/screens";
 import { SCREEN_NAME } from "@/util/constants";
 import { PokemonInfoStackParamList } from "@/navigator/PokemonInfoNavigator/PokemonInfoStackParamList";
 
@@ -16,6 +16,7 @@ const PokemonInfoStack = () => {
         name={SCREEN_NAME.POKEMON_INFO}
         component={PokemonInfoScreen}
       />
+      <Stack.Screen name={SCREEN_NAME.MOVE_INFO} component={MoveInfoScreen} />
     </Stack.Navigator>
   );
 };

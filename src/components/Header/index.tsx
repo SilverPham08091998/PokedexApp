@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { scale } from "react-native-utils-scale";
 import { CText } from "..";
-import { COLORS_LIGHT, GET_COLORS, rgba } from "@/theme";
+import { GET_COLORS, rgba } from "@/theme";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -23,6 +23,7 @@ interface Props {
   onPressCart?: () => void;
   onPressCancel?: () => void;
   onPressMore?: () => void;
+  colorHeader?: string;
 }
 
 const CHeader: React.FC<Props> = (props) => {
@@ -33,6 +34,7 @@ const CHeader: React.FC<Props> = (props) => {
     onBack,
     containerStyle = {},
     isShowBack = true,
+    colorHeader,
   } = props;
 
   return (
@@ -45,12 +47,17 @@ const CHeader: React.FC<Props> = (props) => {
     >
       {isShowBack && (
         <TouchableOpacity onPress={() => (onBack ? onBack : goBack())}>
-          <MaterialIcon name={"keyboard-arrow-left"} size={scale(24)} />
+          <MaterialIcon
+            name={"keyboard-arrow-left"}
+            size={scale(24)}
+            color={colorHeader}
+          />
         </TouchableOpacity>
       )}
       <CText
         fontWeight={"700"}
         fontSize={18}
+        color={colorHeader}
         style={{
           ...titleStyle,
           flex: 1,
@@ -60,11 +67,7 @@ const CHeader: React.FC<Props> = (props) => {
         {title}
       </CText>
       <TouchableOpacity>
-        <FeatherIcon
-          name={"heart"}
-          size={scale(24)}
-          color={COLORS_LIGHT.BLACK_1}
-        />
+        <FeatherIcon name={"heart"} size={scale(24)} color={colorHeader} />
       </TouchableOpacity>
     </View>
   );

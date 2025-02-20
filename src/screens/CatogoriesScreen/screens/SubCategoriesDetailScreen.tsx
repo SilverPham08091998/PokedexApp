@@ -45,7 +45,7 @@ const SubCategoriesDetailScreen: React.FC<Props> = (props) => {
         renderScene={renderScene}
         routesProps={typeRoutes}
         sceneContainerStyle={{
-          paddingHorizontal: scale(12),
+          paddingHorizontal: scale(0),
           paddingVertical: scale(12),
         }}
       />

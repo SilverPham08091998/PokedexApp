@@ -7,6 +7,7 @@ import {
   PokemonType,
   ResourceLink,
 } from "@/type";
+import { MoveInfo } from "@/type/Move";
 
 export interface HomeInitialStateType {
   listPokedex?: ListCommon;
@@ -22,5 +23,9 @@ export interface HomeInitialStateType {
     moves?: Array<PokemonMove>;
     pokemons?: Array<PokemonInfo>;
     info?: PokemonType;
+  };
+  moveInfo: {
+    info?: MoveInfo;
+    learnedByPokemon?: Array<PokemonInfo>;
   };
 }

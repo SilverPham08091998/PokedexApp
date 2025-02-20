@@ -103,6 +103,7 @@ const PokemonInfoScreen: React.FC<Props> = (props: Props) => {
       <View style={{ flex: 1 }}>
         <CHeader
           title={pokemon.name}
+          colorHeader={COLORS_LIGHT.WHITE}
           titleStyle={{
             color: COLORS_LIGHT.WHITE,
             zIndex: 1,
@@ -120,7 +121,7 @@ const PokemonInfoScreen: React.FC<Props> = (props: Props) => {
             transform: [{ rotate: "90deg" }, { translateY: 100 }],
           }}
           source={IMAGE_URL.pokeball}
-          tintColor={colorPrimary}
+          tintColor={rgba(colorPrimary, 0.6)}
         />
 
         <View
@@ -135,7 +136,7 @@ const PokemonInfoScreen: React.FC<Props> = (props: Props) => {
               ...styleAnimation,
             }}
             source={IMAGE_URL.pokeball}
-            tintColor={colorPrimary}
+            tintColor={rgba(colorPrimary, 0.6)}
           />
           <CImage
             url={pokemon.sprites.front_default}

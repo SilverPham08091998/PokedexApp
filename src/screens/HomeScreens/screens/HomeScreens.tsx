@@ -9,8 +9,7 @@ import React from "react";
 import { COLORS_LIGHT, GET_COLORS, rgba } from "@/theme";
 import { scale } from "react-native-utils-scale";
 import { useAppDispatch, useAppSelector } from "@/util";
-import PokemonItem from "@/screens/HomeScreens/components/PokemonItem";
-import { CText } from "@/components";
+import { CPokemonItem, CText } from "@/components";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { ReduxAction } from "@/redux";
 
@@ -71,7 +70,7 @@ const HomeScreens = () => {
         columnWrapperStyle={{ justifyContent: "space-around" }}
         numColumns={2}
         renderItem={({ item }) => {
-          return <PokemonItem item={item} />;
+          return <CPokemonItem item={item} />;
         }}
         ItemSeparatorComponent={() => <View style={{ height: scale(12) }} />}
         ListFooterComponent={renderPagination}

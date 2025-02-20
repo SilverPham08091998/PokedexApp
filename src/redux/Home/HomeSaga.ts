@@ -26,6 +26,7 @@ const HomeSaga = function* watchHome() {
     takeLatest(HOME_ACTION.GET_VERSION_POKEMON, handleVersionPokemon),
     takeLatest(HOME_ACTION.GET_POKEMON_TYPE, handlePokemonType),
     takeLatest(HOME_ACTION.GET_POKEMON_TYPE_INFO, handleGetTypeInfo),
+    takeLatest(HOME_ACTION.GET_POKEMON_MOVE_INFO, handleGetMoveInfo),
   ]);
 };
 
@@ -231,8 +232,11 @@ function* handleGetTypeInfo(action: PayloadActionType<PokemonType>) {
             method: "GET",
           });
           return {
-            ...responseInfo,
-            name: responseInfo?.name.toUpperCase(),
+            move: {
+              ...responseInfo,
+              name: responseInfo?.name.toUpperCase(),
+            },
+            version_group_details: [],
           };
         })
       );
@@ -259,6 +263,43 @@ function* handleGetTypeInfo(action: PayloadActionType<PokemonType>) {
   yield* invoke(
     execution,
     REDUX_ACTION.HOME_ACTION.GET_POKEMON_TYPE_INFO_FAILED,
+    () => action.callback && action.callback()
+  );
+}
+
+function* handleGetMoveInfo(action: PayloadActionType<MoveInfo>) {
+  const execution = function* (): Generator<Effect, void, any> {
+    const fetchAllPokemon = async (pokemons: Array<ResourceLink>) => {
+      return await Promise.all(
+        pokemons.map(async (pokemon: ResourceLink) => {
+          const res = await UtilApi.request<PokemonInfo>({
+            domain: pokemon.url,
+            method: "GET",
+          });
+          return {
+            ...res,
+            name: res.name.toUpperCase(),
+          };
+        })
+      );
+    };
+
+    const learnedByPokemons: Array<PokemonInfo> = yield call(
+      fetchAllPokemon,
+      action.payload.learned_by_pokemon
+    );
+
+    yield put({
+      type: REDUX_ACTION.HOME_ACTION.GET_POKEMON_MOVE_INFO_SUCCESS,
+      payload: {
+        info: action.payload,
+        learnedByPokemon: learnedByPokemons,
+      },
+    });
+  };
+  yield* invoke(
+    execution,
+    REDUX_ACTION.HOME_ACTION.GET_POKEMON_MOVE_INFO_FAILED,
     () => action.callback && action.callback()
   );
 }

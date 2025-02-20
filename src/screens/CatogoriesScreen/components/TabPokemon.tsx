@@ -1,11 +1,28 @@
-import { ScrollView } from "react-native";
-import { CText } from "@/components";
+import { FlatList, ScrollView, View } from "react-native";
+import { CPokemonItem } from "@/components";
 import React from "react";
+import { scale } from "react-native-utils-scale";
+import { useAppSelector } from "@/util";
 
-const TabPokemon: React.FC<any> = () => {
+const TabPokemon = () => {
+  const { pokemons } = useAppSelector((state) => {
+    return state.home.typeInfo;
+  });
+
   return (
     <ScrollView>
-      <CText>{"ABC"}</CText>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
+        style={{ flex: 1 }}
+        data={pokemons}
+        columnWrapperStyle={{ justifyContent: "space-around" }}
+        numColumns={2}
+        renderItem={({ item }) => {
+          return <CPokemonItem item={item} />;
+        }}
+        ItemSeparatorComponent={() => <View style={{ height: scale(12) }} />}
+      />
     </ScrollView>
   );
 };

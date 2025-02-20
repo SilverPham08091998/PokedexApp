@@ -6,6 +6,7 @@ const initialState: HomeInitialStateType = {
   versions: [],
   types: [],
   typeInfo: {},
+  moveInfo: {},
 };
 
 const HomeReducer = (
@@ -45,6 +46,11 @@ const HomeReducer = (
       return {
         ...state,
         typeInfo: { ...action.payload },
+      };
+    case HOME_ACTION.GET_POKEMON_MOVE_INFO_SUCCESS:
+      return {
+        ...state,
+        moveInfo: { ...action.payload },
       };
     default:
       return {
