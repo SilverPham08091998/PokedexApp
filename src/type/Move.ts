@@ -3,10 +3,10 @@ import { VersionGroupDetail } from "@/type/PokemonInfo";
 export interface MoveInfo {
   id: number;
   name: string;
-  accuracy: number | null;
+  accuracy: number;
   effect_chance: number | null;
-  power: number | null;
-  pp: number | null;
+  power: number;
+  pp: number;
   priority: number;
   damage_class: ResourceLink;
   generation: ResourceLink;

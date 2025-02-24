@@ -19,6 +19,11 @@ function* setUp() {
       payload: "https://pokeapi.co/api/v2/pokemon?offset=0&limit=20",
       isShowLoading: false,
     });
+    yield put<PayloadActionType<string>>({
+      type: REDUX_ACTION.HOME_ACTION.GET_POKEMON_ITEM,
+      payload: "https://pokeapi.co/api/v2/item?offset=0&limit=20",
+      isShowLoading: false,
+    });
     yield put<PayloadActionType<{}>>({
       type: REDUX_ACTION.HOME_ACTION.GET_VERSION_POKEMON,
       payload: {},
@@ -33,15 +38,21 @@ function* setUp() {
       take(REDUX_ACTION.HOME_ACTION.GET_POKEDEX_SUCCESS),
       take(REDUX_ACTION.HOME_ACTION.GET_VERSION_POKEMON_SUCCESS),
       take(REDUX_ACTION.HOME_ACTION.GET_POKEMON_TYPE_SUCCESS),
+      take(REDUX_ACTION.HOME_ACTION.GET_POKEMON_ITEM_SUCCESS),
     ]);
     yield put({
       type: REDUX_ACTION.APP_STATE_ACTION.SET_UP_APP_SUCCESS,
     });
   };
-  yield* invoke(execution, REDUX_ACTION.APP_STATE_ACTION.SET_UP_APP_FAIL, () =>
-    setTimeout(() => {
-      NAVIGATION.reset(SCREEN_NAME.MAIN_STACK);
-    }, 1000)
+  yield* invoke(
+    execution,
+    REDUX_ACTION.APP_STATE_ACTION.SET_UP_APP_FAIL,
+    () =>
+      setTimeout(() => {
+        NAVIGATION.reset(SCREEN_NAME.MAIN_STACK);
+      }, 1000),
+    undefined,
+    false
   );
 }
 

@@ -1,29 +1,35 @@
-import { FlatList, ScrollView, View } from "react-native";
-import { CPokemonItem } from "@/components";
+import { CPokemonItem, PaginationList } from "@/components";
 import React from "react";
-import { scale } from "react-native-utils-scale";
-import { useAppSelector } from "@/util";
+import { DEVICE_HEIGHT, useAppDispatch, useAppSelector } from "@/util";
+import { PokemonInfo } from "@/type";
+import { ReduxAction } from "@/redux";
 
 const TabPokemon = () => {
+  const dispatch = useAppDispatch();
   const { pokemons } = useAppSelector((state) => {
     return state.home.typeInfo;
   });
 
+  const onPressPagination = (page: number) => {
+    dispatch(ReduxAction.HOME_ACTION.getPagePokemonOfType(page));
+  };
+
   return (
-    <ScrollView>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
-        style={{ flex: 1 }}
-        data={pokemons}
-        columnWrapperStyle={{ justifyContent: "space-around" }}
-        numColumns={2}
-        renderItem={({ item }) => {
-          return <CPokemonItem item={item} />;
-        }}
-        ItemSeparatorComponent={() => <View style={{ height: scale(12) }} />}
-      />
-    </ScrollView>
+    <PaginationList<PokemonInfo>
+      showsVerticalScrollIndicator={false}
+      scrollEnabled={true}
+      data={pokemons}
+      columnWrapperStyle={{ justifyContent: "space-around" }}
+      windowSize={DEVICE_HEIGHT * 3}
+      removeClippedSubviews={true}
+      numColumns={2}
+      renderItem={(item) => <CPokemonItem item={item} />}
+      onPressPagination={(url, page) => {
+        if (page) {
+          onPressPagination(page);
+        }
+      }}
+    />
   );
 };
 export default TabPokemon;

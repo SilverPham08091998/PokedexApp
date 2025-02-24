@@ -25,6 +25,22 @@ export const HOME_ACTION = {
   GET_POKEMON_MOVE_INFO: "GET_POKEMON_MOVE_INFO",
   GET_POKEMON_MOVE_INFO_SUCCESS: "GET_POKEMON_MOVE_INFO_SUCCESS",
   GET_POKEMON_MOVE_INFO_FAILED: "GET_POKEMON_MOVE_INFO_FAILED",
+
+  GET_PAGE_LEARNT_BY_POKEMON: "GET_PAGE_LEARNT_BY_POKEMON",
+  GET_PAGE_LEARNT_BY_POKEMON_SUCCESS: "GET_PAGE_LEARNT_BY_POKEMON_SUCCESS",
+  GET_PAGE_LEARNT_BY_POKEMON_FAILED: "GET_PAGE_LEARNT_BY_POKEMON_FAILED",
+
+  GET_POKEMON_ITEM: "GET_POKEMON_ITEM",
+  GET_POKEMON_ITEM_SUCCESS: "GET_POKEMON_ITEM_SUCCESS",
+  GET_POKEMON_ITEM_FAILED: "GET_POKEMON_ITEM_FAILED",
+
+  GET_PAGE_POKEMON_OF_TYPE: "GET_PAGE_POKEMON_OF_TYPE",
+  GET_PAGE_POKEMON_OF_TYPE_SUCCESS: "GET_PAGE_POKEMON_OF_TYPE_SUCCESS",
+  GET_PAGE_POKEMON_OF_TYPE_FAILED: "GET_PAGE_POKEMON_OF_TYPE_FAILED",
+
+  GET_PAGE_MOVE_OF_TYPE: "GET_PAGE_MOVE_OF_TYPE",
+  GET_PAGE_MOVE_OF_TYPE_SUCCESS: "GET_PAGE_MOVE_OF_TYPE_SUCCESS",
+  GET_PAGE_MOVE_OF_TYPE_FAILED: "GET_PAGE_MOVE_OF_TYPE_FAILED",
 };
 
 export const getPokedex = (url: string): PayloadActionType<string> => {
@@ -76,6 +92,39 @@ export const getMoveInfo = (
     callback: callback,
   };
 };
+
+export const getPageLearntByPokemon = (
+  page: number
+): PayloadActionType<number> => {
+  return {
+    type: HOME_ACTION.GET_PAGE_LEARNT_BY_POKEMON,
+    payload: page,
+  };
+};
+
+export const getPokemonItem = (url: string): PayloadActionType<string> => {
+  return {
+    type: HOME_ACTION.GET_POKEMON_ITEM,
+    payload: url,
+    isShowLoading: true,
+  };
+};
+
+export const getPagePokemonOfType = (
+  page: number
+): PayloadActionType<number> => {
+  return {
+    type: HOME_ACTION.GET_PAGE_POKEMON_OF_TYPE,
+    payload: page,
+  };
+};
+export const getPageMoveOfType = (page: number): PayloadActionType<number> => {
+  return {
+    type: HOME_ACTION.GET_PAGE_MOVE_OF_TYPE,
+    payload: page,
+  };
+};
+
 export const HomeAction = {
   getPokedex,
   getPokemonInfo,
@@ -83,4 +132,8 @@ export const HomeAction = {
   getPokemonType,
   getTypeInfo,
   getMoveInfo,
+  getPageLearntByPokemon,
+  getPokemonItem,
+  getPageMoveOfType,
+  getPagePokemonOfType,
 };

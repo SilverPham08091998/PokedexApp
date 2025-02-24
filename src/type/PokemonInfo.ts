@@ -111,12 +111,3 @@ export interface PokemonType {
   slot: number;
   type: ResourceLink;
 }
-
-export interface ListCommon {
-  count: number;
-  next: string;
-  previous: string;
-  page: number;
-  results: Array<ResourceLink>;
-  data: Array<PokemonInfo>;
-}

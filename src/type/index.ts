@@ -1,4 +1,4 @@
-import { ListCommon, PokemonInfo, ResourceLink } from "@/type/PokemonInfo";
+import { PokemonInfo, ResourceLink } from "@/type/PokemonInfo";
 import { PokemonSpecies } from "@/type/PokemonSpecies";
 import { PokemonType, PokemonTypeColors } from "@/type/PokemonType";
 import { Item } from "./Item";
@@ -79,6 +79,15 @@ export interface PaginationType<T> {
   isNext?: boolean;
 }
 
+export interface ListCommon<T> {
+  count: number;
+  next: string;
+  previous: string;
+  page: number;
+  results: Array<ResourceLink>;
+  data: Array<T>;
+}
+
 export interface PayloadActionType<T> {
   type: string;
   payload: T;
@@ -90,7 +99,6 @@ export interface PayloadActionType<T> {
 export type {
   PokemonInfo,
   PokemonSpecies,
-  ListCommon,
   ResourceLink,
   EvolutionChain,
   Item,

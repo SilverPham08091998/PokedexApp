@@ -1,12 +1,39 @@
 import { HOME_ACTION } from "./HomeAction";
 import { HomeInitialStateType } from "@/redux/Home/Type";
+import { RootState } from "@/core/store";
 
 const initialState: HomeInitialStateType = {
   pokemonInfo: {},
   versions: [],
   types: [],
-  typeInfo: {},
-  moveInfo: {},
+  typeInfo: {
+    moves: {
+      data: [],
+      results: [],
+      page: 0,
+      next: "",
+      previous: "",
+      count: 0,
+    },
+    pokemons: {
+      data: [],
+      results: [],
+      page: 0,
+      next: "",
+      previous: "",
+      count: 0,
+    },
+  },
+  moveInfo: {
+    learnedByPokemon: {
+      data: [],
+      results: [],
+      page: 0,
+      next: "",
+      previous: "",
+      count: 0,
+    },
+  },
 };
 
 const HomeReducer = (
@@ -42,15 +69,30 @@ const HomeReducer = (
         ...state,
         types: action.payload,
       };
+    case HOME_ACTION.GET_POKEMON_TYPE_INFO:
+      return {
+        ...state,
+        typeInfo: {
+          ...initialState.typeInfo,
+        },
+      };
+    case HOME_ACTION.GET_PAGE_POKEMON_OF_TYPE_SUCCESS:
+    case HOME_ACTION.GET_PAGE_MOVE_OF_TYPE_SUCCESS:
     case HOME_ACTION.GET_POKEMON_TYPE_INFO_SUCCESS:
       return {
         ...state,
-        typeInfo: { ...action.payload },
+        typeInfo: { ...state.typeInfo, ...action.payload },
       };
     case HOME_ACTION.GET_POKEMON_MOVE_INFO_SUCCESS:
+    case HOME_ACTION.GET_PAGE_LEARNT_BY_POKEMON_SUCCESS:
       return {
         ...state,
-        moveInfo: { ...action.payload },
+        moveInfo: { ...state.moveInfo, ...action.payload },
+      };
+    case HOME_ACTION.GET_POKEMON_ITEM_SUCCESS:
+      return {
+        ...state,
+        items: action.payload,
       };
     default:
       return {
@@ -59,3 +101,5 @@ const HomeReducer = (
   }
 };
 export default HomeReducer;
+
+export const getHomeReducer = (state: RootState) => state.home;

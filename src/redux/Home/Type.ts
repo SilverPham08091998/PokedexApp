@@ -1,5 +1,6 @@
 import {
   EvolutionChain,
+  Item,
   ListCommon,
   PokemonInfo,
   PokemonMove,
@@ -10,7 +11,8 @@ import {
 import { MoveInfo } from "@/type/Move";
 
 export interface HomeInitialStateType {
-  listPokedex?: ListCommon;
+  listPokedex?: ListCommon<PokemonInfo>;
+  items?: ListCommon<Item>;
   pokemonInfo: {
     info?: PokemonInfo;
     species?: PokemonSpecies;
@@ -20,12 +22,12 @@ export interface HomeInitialStateType {
   versions: Array<ResourceLink>;
   types: Array<PokemonType>;
   typeInfo: {
-    moves?: Array<PokemonMove>;
-    pokemons?: Array<PokemonInfo>;
+    moves: ListCommon<PokemonMove>;
+    pokemons: ListCommon<PokemonInfo>;
     info?: PokemonType;
   };
   moveInfo: {
     info?: MoveInfo;
-    learnedByPokemon?: Array<PokemonInfo>;
+    learnedByPokemon: ListCommon<PokemonInfo>;
   };
 }
