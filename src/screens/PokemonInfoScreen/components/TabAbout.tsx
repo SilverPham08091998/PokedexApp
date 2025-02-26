@@ -78,13 +78,9 @@ const TabAbout: React.FC<Props> = () => {
     <ScrollView
       style={{
         flex: 1,
-        paddingHorizontal: scale(12),
       }}
       showsVerticalScrollIndicator={false}
     >
-      {/*<CText fontSize={17} fontWeight={"bold"} distanceBottom={8}>*/}
-      {/*  {species?.flavor_text_entries[0].flavor_text.replace(/[\n\f]/g, " ")}*/}
-      {/*</CText>*/}
       <CText
         fontSize={18}
         fontWeight={"700"}

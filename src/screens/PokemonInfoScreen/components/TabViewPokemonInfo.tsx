@@ -13,9 +13,11 @@ import TabViewComponent from "@/components/TabView";
 import { scale } from "react-native-utils-scale";
 import TabEntries from "@/screens/PokemonInfoScreen/components/TabEntries";
 
-interface Props {}
+interface Props {
+  activeColor: string;
+}
 
-const TabViewPokemonInfo: React.FC<Props> = () => {
+const TabViewPokemonInfo: React.FC<Props> = (props) => {
   const renderScene = (
     sceneRenderProps: SceneRendererProps & { route: RoutesType }
   ) => {
@@ -42,6 +44,7 @@ const TabViewPokemonInfo: React.FC<Props> = () => {
         paddingHorizontal: scale(12),
         paddingVertical: scale(12),
       }}
+      activeColor={props.activeColor}
     />
   );
 };

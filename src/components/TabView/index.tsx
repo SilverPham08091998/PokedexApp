@@ -1,5 +1,5 @@
 import { useWindowDimensions, View, ViewStyle } from "react-native";
-import { GET_COLORS } from "@/theme";
+import { COLORS_LIGHT, GET_COLORS } from "@/theme";
 import { scale } from "react-native-utils-scale";
 import {
   SceneRendererProps,
@@ -27,6 +27,8 @@ interface Props {
     }
   ) => React.ReactNode;
   indexDefault?: number;
+  activeColor?: string;
+  inActiveColor?: string;
 }
 
 const TabViewComponent = (props: Props) => {
@@ -39,6 +41,8 @@ const TabViewComponent = (props: Props) => {
     renderLazyPlaceholder,
     renderTabBar,
     indexDefault,
+    activeColor = COLORS_LIGHT.PRIMARY,
+    inActiveColor = COLORS_LIGHT.BLACK_4,
   } = props;
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState<number>(indexDefault || 0);
@@ -95,9 +99,7 @@ const TabViewComponent = (props: Props) => {
             renderLabel={(scene) => {
               return (
                 <CText
-                  color={
-                    scene.focused ? GET_COLORS().PRIMARY : GET_COLORS().BLACK_4
-                  }
+                  color={scene.focused ? activeColor : inActiveColor}
                   textAlign={"center"}
                 >
                   {scene.route.title}
@@ -108,7 +110,7 @@ const TabViewComponent = (props: Props) => {
               return <TabBarItem {...tabBarItemProps} />;
             }}
             indicatorStyle={{
-              backgroundColor: GET_COLORS().PRIMARY,
+              backgroundColor: activeColor,
             }}
             onTabPress={({ route, preventDefault }) => {
               if (route.disable) {

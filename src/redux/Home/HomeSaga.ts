@@ -272,11 +272,10 @@ function* handleGetTypeInfo(action: PayloadActionType<PokemonType>) {
 function* handleGetMoveInfo(action: PayloadActionType<MoveInfo>) {
   const execution = function* (): Generator<Effect, void, any> {
     const { moveInfo }: HomeInitialStateType = yield select(getHomeReducer);
-    const newPagePokemon = yield call(
-      getPagePokemonInfo,
-      1,
-      moveInfo.learnedByPokemon
-    );
+    const newPagePokemon = yield call(getPagePokemonInfo, 1, {
+      ...moveInfo.learnedByPokemon,
+      results: action.payload.learned_by_pokemon.map((i) => i),
+    });
 
     yield put({
       type: REDUX_ACTION.HOME_ACTION.GET_POKEMON_MOVE_INFO_SUCCESS,

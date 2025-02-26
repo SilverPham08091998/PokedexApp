@@ -1,13 +1,17 @@
 import React, { useEffect } from "react";
-import { FlatList, Image, View } from "react-native";
+import { FlatList, Image, StyleSheet, View } from "react-native";
 import { CHeader, CImage, CText } from "@/components";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { SCREEN_NAME, useAppDispatch } from "@/util";
+import {
+  DEVICE_HEIGHT,
+  DEVICE_WIDTH,
+  SCREEN_NAME,
+  useAppDispatch,
+} from "@/util";
 import { PokemonInfoStackParamList } from "@/navigator/PokemonInfoNavigator/PokemonInfoStackParamList";
 import { PokemonTypeColors } from "@/type";
 import { COLORS_LIGHT, GET_COLORS, IMAGE_URL, rgba } from "@/theme";
 import { scale } from "react-native-utils-scale";
-import TabViewPokemonInfo from "@/screens/PokemonInfoScreen/components/TabViewPokemonInfo";
 import { ReduxAction } from "@/redux";
 import Animated, {
   Easing,
@@ -15,8 +19,15 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
+  withSpring,
   withTiming,
 } from "react-native-reanimated";
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
+import TabViewPokemonInfo from "@/screens/PokemonInfoScreen/components/TabViewPokemonInfo";
 
 interface Props
   extends NativeStackScreenProps<
@@ -24,6 +35,7 @@ interface Props
     SCREEN_NAME.POKEMON_INFO
   > {}
 
+const initialHeight = (DEVICE_HEIGHT * 2) / 3;
 const PokemonInfoScreen: React.FC<Props> = (props: Props) => {
   const { pokemon } = props.route.params;
   const dispatch = useAppDispatch();
@@ -98,8 +110,30 @@ const PokemonInfoScreen: React.FC<Props> = (props: Props) => {
     };
   });
 
+  const pressed = useSharedValue<boolean>(false);
+
+  const offset = useSharedValue<number>(initialHeight);
+
+  const pan = Gesture.Pan()
+    .onBegin(() => {
+      pressed.value = true;
+    })
+    .onChange((event) => {
+      offset.value = initialHeight - event.translationY;
+    })
+    .onFinalize(() => {
+      offset.value = withSpring(initialHeight);
+      pressed.value = false;
+    });
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    height: offset.value,
+  }));
+
   return (
-    <View style={{ backgroundColor: rgba(colorPrimary, 0.6), flex: 1 }}>
+    <GestureHandlerRootView
+      style={{ backgroundColor: rgba(colorPrimary, 0.6), flex: 1 }}
+    >
       <View style={{ flex: 1 }}>
         <CHeader
           title={pokemon.name}
@@ -150,17 +184,26 @@ const PokemonInfoScreen: React.FC<Props> = (props: Props) => {
           />
         </View>
       </View>
-
-      <View
-        style={{
-          flex: 2,
-          backgroundColor: COLORS_LIGHT.WHITE,
-        }}
-      >
-        <TabViewPokemonInfo />
-      </View>
-    </View>
+      <Animated.View style={[styles.box, animatedStyles]}>
+        <GestureDetector gesture={pan}>
+          <TabViewPokemonInfo activeColor={colorPrimary} />
+        </GestureDetector>
+      </Animated.View>
+    </GestureHandlerRootView>
   );
 };
 
 export default PokemonInfoScreen;
+
+const styles = StyleSheet.create({
+  container: {},
+  box: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    left: 0,
+    width: DEVICE_WIDTH,
+    backgroundColor: GET_COLORS().WHITE,
+    height: (DEVICE_HEIGHT * 2) / 3,
+  },
+});

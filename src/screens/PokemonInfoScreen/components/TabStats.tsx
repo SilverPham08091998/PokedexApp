@@ -22,7 +22,6 @@ const TabStats: React.FC<Props> = () => {
     <ScrollView
       style={{
         flex: 1,
-        paddingHorizontal: scale(12),
         paddingVertical: scale(12),
       }}
     >
@@ -46,7 +45,7 @@ const TabStats: React.FC<Props> = () => {
               <CText
                 fontSize={16}
                 color={colorPrimary}
-                style={{ alignItems: "flex-start", width: scale(140) }}
+                style={{ alignItems: "flex-start", width: scale(120) }}
               >
                 {STRING_CONVERTER.upperCaseFirstChart(item.stat.name)}
               </CText>
