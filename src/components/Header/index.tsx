@@ -9,10 +9,10 @@ import {
 } from "react-native";
 import { scale } from "react-native-utils-scale";
 import { CText } from "..";
-import { GET_COLORS, rgba } from "@/theme";
+import { COLORS_LIGHT, GET_COLORS, rgba } from "@/theme";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-import FeatherIcon from "react-native-vector-icons/Feather";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import LinearGradient from "react-native-linear-gradient";
 
 interface Props {
   title: string;
@@ -20,9 +20,6 @@ interface Props {
   onBack?: () => void;
   containerStyle?: ViewStyle;
   titleStyle?: TextStyle;
-  onPressCart?: () => void;
-  onPressCancel?: () => void;
-  onPressMore?: () => void;
   colorHeader?: string;
 }
 
@@ -34,42 +31,53 @@ const CHeader: React.FC<Props> = (props) => {
     onBack,
     containerStyle = {},
     isShowBack = true,
-    colorHeader,
+    colorHeader = COLORS_LIGHT.PRIMARY,
   } = props;
 
   return (
-    <View
+    <LinearGradient
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 0 }}
+      colors={[
+        rgba(colorHeader, 0.1),
+        rgba(colorHeader, 0.2),
+        rgba(colorHeader, 0.3),
+        rgba(colorHeader, 0.4),
+      ]}
       style={{
-        ...containerStyle,
-        ...styles.container,
         paddingTop: useSafeAreaInsets().top,
       }}
     >
-      {isShowBack && (
-        <TouchableOpacity onPress={() => (onBack ? onBack : goBack())}>
-          <MaterialIcon
-            name={"keyboard-arrow-left"}
-            size={scale(24)}
-            color={colorHeader}
-          />
-        </TouchableOpacity>
-      )}
-      <CText
-        fontWeight={"700"}
-        fontSize={18}
-        color={colorHeader}
+      <View
         style={{
-          ...titleStyle,
-          flex: 1,
-          paddingHorizontal: scale(isShowBack ? 4 : 0),
+          ...containerStyle,
+          ...styles.container,
         }}
       >
-        {title}
-      </CText>
-      <TouchableOpacity>
-        <FeatherIcon name={"heart"} size={scale(24)} color={colorHeader} />
-      </TouchableOpacity>
-    </View>
+        {isShowBack && (
+          <TouchableOpacity onPress={() => (onBack ? onBack : goBack())}>
+            <MaterialIcon
+              name={"keyboard-arrow-left"}
+              size={scale(24)}
+              color={colorHeader}
+            />
+          </TouchableOpacity>
+        )}
+        <CText
+          fontWeight={"700"}
+          fontSize={18}
+          color={colorHeader}
+          textAlign={"center"}
+          style={{
+            ...titleStyle,
+            flex: 1,
+            paddingHorizontal: scale(isShowBack ? 4 : 0),
+          }}
+        >
+          {title}
+        </CText>
+      </View>
+    </LinearGradient>
   );
 };
 

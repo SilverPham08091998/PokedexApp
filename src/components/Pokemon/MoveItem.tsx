@@ -46,10 +46,7 @@ const MoveItem: React.FC<Props> = (props: Props) => {
         } else {
           dispatch(
             ReduxAction.HOME_ACTION.getMoveInfo(move, () => {
-              NAVIGATION.navigate(
-                SCREEN_NAME.POKEMON_INFO_STACK,
-                SCREEN_NAME.MOVE_INFO
-              );
+              NAVIGATION.navigate(SCREEN_NAME.MOVE_INFO);
             })
           );
         }

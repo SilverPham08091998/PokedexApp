@@ -1,24 +1,21 @@
-import {
-  CategoriesScreen,
-  SubCategoriesDetailScreen,
-} from "@/screens/CatogoriesScreen";
-import { HomeScreens } from "@/screens/HomeScreens";
-import { SearchScreen } from "@/screens/SearchScreen";
-import { UserScreens } from "@/screens/UserScreens";
+import ItemsScreen from "@/screens/ItemsScreen";
+import MoveInfoScreen from "@/screens/MoveInfoScreen";
+import PokemonInfoScreen from "@/screens/PokemonInfoScreen";
 
-import { ProductDetailScreen, ProductScreen } from "@/screens/ProductScreen";
+import PokemonsScreens from "@/screens/PokemonsScreens";
 
-import { SettingScreen } from "@/screens/SettingScreen";
+import SplashScreen from "@/screens/SplashScreen";
 
-export * from "./PokemonInfoScreen";
-export * from "./SplashScreen";
+import TypeInfoScreen from "@/screens/TypeInfoScreen";
+
+import TypesScreen from "@/screens/TypesScreen";
+
 export {
-  CategoriesScreen,
-  HomeScreens,
-  SearchScreen,
-  UserScreens,
-  SubCategoriesDetailScreen,
-  ProductDetailScreen,
-  ProductScreen,
-  SettingScreen,
+  ItemsScreen,
+  MoveInfoScreen,
+  PokemonsScreens,
+  PokemonInfoScreen,
+  SplashScreen,
+  TypeInfoScreen,
+  TypesScreen,
 };

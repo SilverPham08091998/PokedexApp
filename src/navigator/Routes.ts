@@ -1,28 +1,14 @@
-import { ProductStackParamList } from "./ProductStackNavigator/ProductStackParamList";
-import { CategoriesStackParamList } from "./TabHomeNavigator/Categories/CategoriesStackParamsList";
-import { SettingStackParamList } from "./SettingStackNavigator/SettingStackParamList";
-import { PokemonInfoStackParamList } from "./PokemonInfoNavigator/PokemonInfoStackParamList";
+import { PokemonInfo, PokemonMove, PokemonType } from "@/type";
+import { SCREEN_NAME } from "@/util";
 
 export type RootStackParamList = {
-  MAIN_STACK: undefined;
-  HOME_STACK: undefined;
-  CATEGORIES_STACK: undefined | { screen: string; params?: any };
-  USER_STACK: undefined;
-  SEARCH_STACK: undefined;
-  PRODUCT_STACK: undefined | { screen: string; params?: any };
-  SETTING_STACK: undefined;
-  POKEMON_INFO_STACK: undefined | { screen: string; params?: any };
-  SPLASH: undefined;
+  [SCREEN_NAME.POKEMONS]: undefined;
+  [SCREEN_NAME.POKEMON_INFO]: { pokemon: PokemonInfo };
+  [SCREEN_NAME.MOVES]: undefined;
+  [SCREEN_NAME.MOVE_INFO]: { move: PokemonMove } | undefined;
+  [SCREEN_NAME.ITEMS]: undefined;
+  [SCREEN_NAME.MAIN]: undefined;
+  [SCREEN_NAME.SPLASH]: undefined;
+  [SCREEN_NAME.TYPES]: undefined;
+  [SCREEN_NAME.TYPE_INFO]: { type: PokemonType } | undefined;
 };
-export type {
-  ProductStackParamList,
-  CategoriesStackParamList,
-  SettingStackParamList,
-  PokemonInfoStackParamList,
-};
-
-export type CombineStackParamList = RootStackParamList &
-  CategoriesStackParamList &
-  ProductStackParamList &
-  SettingStackParamList &
-  PokemonInfoStackParamList;

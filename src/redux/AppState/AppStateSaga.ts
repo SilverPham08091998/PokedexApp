@@ -49,7 +49,7 @@ function* setUp() {
     REDUX_ACTION.APP_STATE_ACTION.SET_UP_APP_FAIL,
     () =>
       setTimeout(() => {
-        NAVIGATION.reset(SCREEN_NAME.MAIN_STACK);
+        NAVIGATION.reset(SCREEN_NAME.MAIN);
       }, 1000),
     undefined,
     false

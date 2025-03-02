@@ -2,13 +2,13 @@ import {
   createNavigationContainerRef,
   StackActions,
 } from "@react-navigation/native";
-import { CombineStackParamList, RootStackParamList } from "@/navigator/Routes";
+import { RootStackParamList } from "@/navigator/Routes";
 
-const navigationRef = createNavigationContainerRef<CombineStackParamList>();
+const navigationRef = createNavigationContainerRef<RootStackParamList>();
 
-const reset = <RouteName extends keyof CombineStackParamList>(
+const reset = <RouteName extends keyof RootStackParamList>(
   screen: RouteName,
-  params?: CombineStackParamList[RouteName]
+  params?: RootStackParamList[RouteName]
 ) => {
   if (navigationRef.current && navigationRef.current.isReady()) {
     navigationRef.current.reset({
@@ -18,24 +18,20 @@ const reset = <RouteName extends keyof CombineStackParamList>(
   }
 };
 
-const navigate = <
-  RouteStack extends keyof RootStackParamList,
-  RouteName extends keyof CombineStackParamList
->(
-  stack: RouteStack,
+const navigate = <RouteName extends keyof RootStackParamList>(
   screen: RouteName,
-  params?: CombineStackParamList[RouteName]
+  params?: RootStackParamList[RouteName]
 ) => {
   const navigation = navigationRef.current;
   if (navigation && navigation.isReady()) {
     // @ts-ignore
-    navigation.navigate(`${stack}`, { screen: screen, params: params });
+    navigation.navigate(screen, params);
   }
 };
 
-const replace = <RouteName extends keyof CombineStackParamList>(
+const replace = <RouteName extends keyof RootStackParamList>(
   screen: RouteName,
-  params?: CombineStackParamList[RouteName]
+  params?: RootStackParamList[RouteName]
 ) => {
   if (navigationRef.current && navigationRef.current.isReady()) {
     navigationRef.current.dispatch(StackActions.replace(screen, params));
@@ -48,9 +44,9 @@ const goBack = () => {
   }
 };
 
-const push = <RouteName extends keyof CombineStackParamList>(
+const push = <RouteName extends keyof RootStackParamList>(
   screen: RouteName,
-  params?: CombineStackParamList[RouteName]
+  params?: RootStackParamList[RouteName]
 ) => {
   if (navigationRef.current && navigationRef.current.isReady()) {
     navigationRef.current.dispatch(StackActions.push(screen, params));

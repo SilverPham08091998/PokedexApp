@@ -61,7 +61,7 @@
     "react-native-gesture-handler": "^2.12.1",
     "react-native-image-crop-picker": "^0.40.0",
     "react-native-indicators": "^0.17.0",
-    "react-native-linear-gradient": "^2.6.2",
+    "react-native-linear-gradient": "^2.8.3",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^11.1.0",
     "react-native-pager-view": "^6.7.0",

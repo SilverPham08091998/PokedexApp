@@ -26,7 +26,7 @@ interface Props {
   item: PokemonInfo;
 }
 
-const CPokemonItem: React.FC<Props> = (props: Props) => {
+const CPokemonColumnItem: React.FC<Props> = (props: Props) => {
   const dispatch = useAppDispatch();
   const { item } = props;
   const primaryType =
@@ -70,11 +70,7 @@ const CPokemonItem: React.FC<Props> = (props: Props) => {
       onPress={() => {
         dispatch(
           ReduxAction.HOME_ACTION.getPokemonInfo(item, () => {
-            NAVIGATION.navigate(
-              SCREEN_NAME.POKEMON_INFO_STACK,
-              SCREEN_NAME.POKEMON_INFO,
-              { pokemon: item }
-            );
+            NAVIGATION.navigate(SCREEN_NAME.POKEMON_INFO, { pokemon: item });
           })
         );
       }}
@@ -117,7 +113,7 @@ const CPokemonItem: React.FC<Props> = (props: Props) => {
   );
 };
 
-export default React.memo(CPokemonItem);
+export default React.memo(CPokemonColumnItem);
 
 const styles = StyleSheet.create({
   container: {

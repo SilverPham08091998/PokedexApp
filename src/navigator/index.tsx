@@ -3,20 +3,22 @@ import { StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeStack from "@/navigator/TabHomeNavigator/Home";
-import SearchStack from "@/navigator/TabHomeNavigator/Search";
-import CategoriesStack from "@/navigator/TabHomeNavigator/Categories";
-import UserStack from "@/navigator/TabHomeNavigator/User";
-import BottomTabHome from "@/navigator/TabHomeNavigator";
-import { CombineStackParamList } from "@/navigator/Routes";
-import ProductStack from "@/navigator/ProductStackNavigator";
 import { REDUX_ACTION } from "@/redux";
 import NetInfo from "@react-native-community/netinfo";
 import { useAppDispatch } from "@/util";
-import PokemonInfoStack from "@/navigator/PokemonInfoNavigator";
-import SplashScreen from "@/screens/SplashScreen";
+import { RootStackParamList } from "@/navigator/Routes";
+import {
+  ItemsScreen,
+  MoveInfoScreen,
+  PokemonInfoScreen,
+  PokemonsScreens,
+  SplashScreen,
+  TypeInfoScreen,
+  TypesScreen,
+} from "@/screens";
+import TabHomeNavigator from "@/navigator/TabHomeNavigator";
 
-const Stack = createNativeStackNavigator<CombineStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigator = () => {
   const dispatch = useAppDispatch();
@@ -39,24 +41,17 @@ const Navigator = () => {
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen name={SCREEN_NAME.SPLASH} component={SplashScreen} />
-        <Stack.Screen name={SCREEN_NAME.MAIN_STACK} component={BottomTabHome} />
-        <Stack.Screen name={SCREEN_NAME.HOME_STACK} component={HomeStack} />
-        <Stack.Screen name={SCREEN_NAME.SEARCH_STACK} component={SearchStack} />
+        <Stack.Screen name={SCREEN_NAME.MAIN} component={TabHomeNavigator} />
 
-        <Stack.Screen
-          name={SCREEN_NAME.POKEMON_INFO_STACK}
-          component={PokemonInfoStack}
-        />
+        <Stack.Screen name={SCREEN_NAME.MOVE_INFO} component={MoveInfoScreen} />
 
+        <Stack.Screen name={SCREEN_NAME.POKEMONS} component={PokemonsScreens} />
+        <Stack.Screen name={SCREEN_NAME.TYPES} component={TypesScreen} />
+        <Stack.Screen name={SCREEN_NAME.TYPE_INFO} component={TypeInfoScreen} />
+        <Stack.Screen name={SCREEN_NAME.ITEMS} component={ItemsScreen} />
         <Stack.Screen
-          name={SCREEN_NAME.CATEGORIES_STACK}
-          component={CategoriesStack}
-        />
-
-        <Stack.Screen name={SCREEN_NAME.USER_STACK} component={UserStack} />
-        <Stack.Screen
-          name={SCREEN_NAME.PRODUCT_STACK}
-          component={ProductStack}
+          name={SCREEN_NAME.POKEMON_INFO}
+          component={PokemonInfoScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

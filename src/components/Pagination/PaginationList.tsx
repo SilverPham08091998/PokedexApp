@@ -104,14 +104,14 @@ const PaginationList = <T extends any>(props: Props<T>): React.ReactElement => {
           ? renderItemSeparatorComponent
           : () => <View style={{ height: scale(itemSeparatorHeight) }} />
       }
-      ListHeaderComponent={
+      ListFooterComponent={
         renderHeaderComponent ? (
           renderHeaderComponent
         ) : (
           <View style={{ height: scale(distanceTop) }} />
         )
       }
-      ListFooterComponent={
+      ListHeaderComponent={
         renderFooterComponent ? renderFooterComponent : renderPagination()
       }
       ListEmptyComponent={<EmptyList {...props} />}
